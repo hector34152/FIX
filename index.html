@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Arqueos - FIX Ferreterías</title>
+    <!-- Tailwind CSS para un diseño profesional y limpio -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            body { background: white; color: black; }
+            .print-card { border: 1px solid #ccc; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen pb-12">
+
+    <!-- Encabezado -->
+    <header class="bg-orange-600 text-white shadow-md no-print">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl font-black tracking-wider text-white">FIX</span>
+                <span class="text-sm font-semibold tracking-wide border-l pl-3 border-orange-400">FERRETERÍAS</span>
+            </div>
+            <h1 class="text-xl font-bold">Control de Efectivo y Arqueos</h1>
+        </div>
+    </header>
+
+    <!-- Navegación de Pestañas (Formatos) -->
+    <div class="container mx-auto px-4 mt-6 no-print">
+        <div class="flex space-x-2 border-b border-gray-200 overflow-x-auto">
+            <button id="btnTabArqueo" onclick="switchTab('arqueo')" class="py-2 px-4 font-semibold text-sm rounded-t-lg bg-white border-t border-x border-gray-200 text-orange-600 -mb-px z-10 whitespace-nowrap">
+                1. Arqueo de Caja de Turno
+            </button>
+            <button id="btnTabRecepcion" onclick="switchTab('recepcion')" class="py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                2. Recepción de Fondo Fijo
+            </button>
+            <button id="btnTabLOPE" onclick="switchTab('LOPE')" class="py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                3. Evaluacion LOPE
+            </button>
+            <button id="btnTabCajas" onclick="switchTab('cajas')" class="py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap">
+                4. Evaluación de Cajas
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="container mx-auto px-4 mt-4">
+
+        <!-- ================= FORMATO 1: ARQUEO DE CAJA ================= -->
+        <section id="sectionArqueo" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Formato: Arqueo Cajero</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Arque de Caja</span>
+                </div>
+            </div>
+
+            <!-- Datos Generales -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
+                    <input type="text" id="arqEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
+                    <input type="text" id="arqResponsable" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="arqFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+            </div>
+
+            <!-- Tablas de Denominaciones -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Billetes -->
+                <div>
+                    <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Billetes</h3>
+                    <table class="w-full text-sm border-x border-b border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100 text-left text-xs font-bold uppercase text-gray-600">
+                                <th class="p-2">Denominación</th>
+                                <th class="p-2 text-center">Cantidad</th>
+                                <th class="p-2 text-right">Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyBilletesArqueo">
+                            <!-- JS generará las filas aquí -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-gray-50 font-bold border-t">
+                                <td colspan="2" class="p-2 text-right">Total Billetes:</td>
+                                <td id="totalBilletesArqueo" class="p-2 text-right text-gray-900">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Monedas -->
+                <div>
+                    <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Monedas</h3>
+                    <table class="w-full text-sm border-x border-b border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100 text-left text-xs font-bold uppercase text-gray-600">
+                                <th class="p-2">Denominación</th>
+                                <th class="p-2 text-center">Cantidad</th>
+                                <th class="p-2 text-right">Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyMonedasArqueo">
+                            <!-- JS generará las filas aquí -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="bg-gray-50 font-bold border-t">
+                                <td colspan="2" class="p-2 text-right">Total Monedas:</td>
+                                <td id="totalMonedasArqueo" class="p-2 text-right text-gray-900">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cálculos de Cierre y Diferencia -->
+            <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center font-semibold">
+                        <span class="text-gray-700">Total Efectivo en Caja (A):</span>
+                        <span id="lblTotalEfectivoArqueo" class="text-lg font-bold text-gray-900">$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 text-sm">(-) Fondo de Caja (B):</span>
+                        <input type="number" id="arqFondoCaja" value="2500" oninput="calcularArqueo()" class="w-32 text-right rounded-md border-gray-300 p-1 border font-medium">
+                    </div>
+                    <hr>
+                    <div class="flex justify-between items-center font-bold text-orange-700">
+                        <span>(=) Total Efectivo a Declarar:</span>
+                        <span id="lblTotalDeclararArqueo">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3 border-t md:border-t-0 md:border-l md:pl-6 border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600 text-sm">Venta s/ Sistema:</span>
+                        <input type="number" id="arqSistema" step="0.01" value="0.00" oninput="calcularArqueo()" class="w-32 text-right rounded-md border-gray-300 p-1 border font-medium">
+                    </div>
+                    <hr>
+                    <div id="divDiferenciaArqueo" class="flex justify-between items-center p-2 rounded font-bold bg-gray-100">
+                        <span>DIFERENCIA:</span>
+                        <span id="lblDiferenciaArqueo">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firmas Digitales -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
+                        <canvas id="canvasFirmaArqResp" class="w-full h-32 block touch-none"></canvas>
+                        <button type="button" onclick="clearSignature('ArqResp')" class="absolute bottom-1 right-2 text-xs text-red-500 hover:text-red-700 font-bold no-print">Borrar</button>
+                    </div>
+                    <div class="mt-2 text-sm font-medium text-gray-600 uppercase">FIRMA DE RESPONSABLE</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
+                        <canvas id="canvasFirmaArqSup" class="w-full h-32 block touch-none"></canvas>
+                        <button type="button" onclick="clearSignature('ArqSup')" class="absolute bottom-1 right-2 text-xs text-red-500 hover:text-red-700 font-bold no-print">Borrar</button>
+                    </div>
+                    <div class="mt-2 text-sm font-medium text-gray-600 uppercase">SUPERVISADO POR</div>
+                </div>
+            </div>
+
+            <!-- Botón Imprimir -->
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionArqueo',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
+                    Descargar Arqueo
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FORMATO 2: RECEPCIÓN DE FONDO FIJO ================= -->
+        <section id="sectionRecepcion" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Formato: Arqueo Caja chica</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Fondo caja chica</span>
+                </div>
+            </div>
+
+            <!-- Datos Generales -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="recFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Monto Recibido Esp. ($)</label>
+                    <input type="number" id="recMontoFijo" value="15000" oninput="calcularRecepcion()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 font-bold text-orange-700 bg-gray-50 border">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 border-t pt-4">
+                <div class="p-3 bg-gray-50 rounded border">
+                    <span class="text-xs font-black uppercase text-gray-500 block mb-2">Entregado por:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="recEntregadoNom" placeholder="Nombre" value="" class="p-1.5 text-xs rounded border">
+                        <input type="text" id="recEntregadoPuesto" placeholder="Puesto" value="Supervisor" class="p-1.5 text-xs rounded border">
+                    </div>
+                </div>
+                <div class="p-3 bg-gray-50 rounded border">
+                    <span class="text-xs font-black uppercase text-gray-500 block mb-2">Recibido / Supervisado por:</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="recRecibidoNom" placeholder="Nombre" class="p-1.5 text-xs rounded border">
+                        <input type="text" id="recRecibidoPuesto" placeholder="Puesto" value="Gerente" class="p-1.5 text-xs rounded border">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tablas Desglose -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Billetes -->
+                <div>
+                    <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Billetes</h3>
+                    <table class="w-full text-sm border-x border-b border-gray-200">
+                        <tbody id="tbodyBilletesRec"></tbody>
+                        <tfoot>
+                            <tr class="bg-gray-50 font-bold border-t">
+                                <td class="p-2 text-right">Total Billetes:</td>
+                                <td id="totalBilletesRec" class="p-2 text-right text-gray-900">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Monedas -->
+                <div>
+                    <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Monedas</h3>
+                    <table class="w-full text-sm border-x border-b border-gray-200">
+                        <tbody id="tbodyMonedasRec"></tbody>
+                        <tfoot>
+                            <tr class="bg-gray-50 font-bold border-t">
+                                <td class="p-2 text-right">Total Monedas:</td>
+                                <td id="totalMonedasRec" class="p-2 text-right text-gray-900">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Totales de Entrega -->
+            <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center font-medium">
+                        <span>Monto Establecido:</span>
+                        <span id="lblMontoEstRec">$15,000.00</span>
+                    </div>
+                    <div class="flex justify-between items-center font-bold text-lg border-t pt-2">
+                        <span>Total Efectivo Contado:</span>
+                        <span id="lblTotalEfectivoRec" class="text-orange-600">$0.00</span>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-end border-t md:border-t-0 md:border-l md:pl-6 border-gray-200">
+                    <div id="divDiferenciaRec" class="w-full flex justify-between items-center p-3 rounded font-black text-base bg-gray-100">
+                        <span>DIFERENCIA:</span>
+                        <span id="lblDiferenciaRec">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="mt-4">
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
+                <textarea id="recObservaciones" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
+            </div>
+
+            <!-- Firmas Digitales -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="flex flex-col items-center">
+                    <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
+                        <canvas id="canvasFirmaRecEnt" class="w-full h-32 block touch-none"></canvas>
+                        <button type="button" onclick="clearSignature('RecEnt')" class="absolute bottom-1 right-2 text-xs text-red-500 hover:text-red-700 font-bold no-print">Borrar</button>
+                    </div>
+                    <div class="mt-2 text-sm font-medium text-gray-600 uppercase">FIRMA DE ENTREGADO</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
+                        <canvas id="canvasFirmaRecRec" class="w-full h-32 block touch-none"></canvas>
+                        <button type="button" onclick="clearSignature('RecRec')" class="absolute bottom-1 right-2 text-xs text-red-500 hover:text-red-700 font-bold no-print">Borrar</button>
+                    </div>
+                    <div class="mt-2 text-sm font-medium text-gray-600 uppercase">FIRMA DE RECIBIDO / SUPERVISADO</div>
+                </div>
+            </div>
+
+            <!-- Botón Imprimir -->
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionRecepcion',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
+                    Descargar Recepción
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FORMATO 3: EVALUACION LOPE ================= -->
+        <section id="sectionLOPE" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Formato: Evaluacion LOPE</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Evaluación LOPE</span>
+                </div>
+            </div>
+            <!-- Datos Generales -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
+                    <input type="text" id="lopeEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Area</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                        <option value="area1">AREA 1</option>
+                        <option value="area2">AREA 2</option>
+                        <option value="area3">AREA 3</option>
+                        <option value="area4">AREA 4</option>
+                        <option value="area5">AREA 5</option>
+                        <option value="area6">AREA 6</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                        <option value="nayeli">Nayeli</option>
+                        <option value="valeria">Valeria</option>
+                        <option value="salma">Salma</option>
+                        <option value="thalia">Thalia</option>
+                        <option value="michelle">Michelle</option>
+                        <option value="berenice">Berenice</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="lopeFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+            </div>
+            <div class="block gap-8">
+                <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Limpieza</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                    <div class="text-sm text-gray-600">
+                        Productos y muebles limpios.<br>
+                        Producto con empaque en buen estado.<br>
+                        Maquinas limpias de ultima generación y en perfectas condiciones.<br>
+                        Mobiliario, graficos, accesorios y perfocel en perfectas condiciones.
+                    </div>
+                    <div>
+                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                            <option value="na">No aplica</option>
+                            <option value="def">Deficiente</option>
+                            <option value="reg">Regular</option>
+                            <option value="exc">Excelente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
+                <textarea id="lopeObsLimpieza" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
+            </div>
+            
+            <div class="mt-6">
+                <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">ORDEN</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                    <div class="text-sm text-gray-600">
+                        Producto acomodado, de frente y alineado en su centro de gravedad. <br>
+                        Producto rotado.<br>
+                        Producto careado.<br>
+                        Producto distribuido. <br>
+                        Respeta el planograma.
+                    </div>
+                    <div>
+                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                            <option value="na">No aplica</option>
+                            <option value="def">Deficiente</option>
+                            <option value="reg">Regular</option>
+                            <option value="exc">Excelente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
+                <textarea id="lopeObsOrden" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
+            </div>
+
+            <div class="mt-6">
+                <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">PRECIO</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                    <div class="text-sm text-gray-600">Precios actuales.<br>
+                        Etiquetas impresas, legibles, alineadas, y en buen estado.<br>
+                        La información de la etiqueta debe corresponder a la del producto.<br>
+                        Graficos, etiquetas especiales y fichas técnicas en buen estado.<br>
+                        Graficos de promociòn vigentes y en buen estado.
+                    </div>
+                    <div>
+                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                            <option value="na">No aplica</option>
+                            <option value="def">Deficiente</option>
+                            <option value="reg">Regular</option>
+                            <option value="exc">Excelente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
+                <textarea id="lopeObsPrecio" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
+            </div>
+
+            <div class="mt-6">
+                <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">EXISTENCIA</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                    <div class="text-sm text-gray-600">Inventario correcto de acuerdo con la capacidad de gancho indicada en la etiqueta.<br>No debe existir ceros en la exhibición.</div>
+                    <div>
+                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                            <option value="na">No aplica</option>
+                            <option value="def">Deficiente</option>
+                            <option value="reg">Regular</option>
+                            <option value="exc">Excelente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 mb-6">
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
+                <textarea id="lopeObsExistencia" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
+            </div>
+
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionLOPE',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">Descargar Evaluación</button>
+            </div>
+        </section>
+
+        <!-- ================= FORMATO 4: EVALUACIÓN DE CAJAS ================= -->
+        <section id="sectionCajas" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Formato: Evaluación de Estado en Cajas de Cobro</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Cajas de Cobro</span>
+                </div>
+            </div>
+
+            <!-- Datos Generales -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
+                    <input type="text" id="lopeEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">CAJA</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                        <option value="area1">CAJA 1</option>
+                        <option value="area2">CAJA 2</option>
+                        <option value="area3">CAJA 3</option>
+                        <option value="area4">CAJA 4</option>
+                        <option value="area5">CAJA 5</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                        <option value="nayeli">Nayeli</option>
+                        <option value="valeria">Valeria</option>
+                        <option value="salma">Salma</option>
+                        <option value="thalia">Thalia</option>
+                        <option value="michelle">Michelle</option>
+                        <option value="berenice">Berenice</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="lopeFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                </div>
+            </div>
+
+            <!-- Tabla de Evaluación -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border border-gray-200 rounded-md">
+                    <thead>
+                        <tr class="bg-gray-800 text-white text-xs font-bold uppercase tracking-wider">
+                            <th class="p-3 w-1/4">Categoría</th>
+                            <th class="p-3 w-1/2">Estándar de Calidad</th>
+                            <th class="p-3 w-1/4 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Bloque Limpieza -->
+                        <tr class="bg-gray-100 font-bold text-xs text-gray-700 uppercase border-b">
+                            <td colspan="3" class="p-2 tracking-wide text-orange-600">LIMPIEZA</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Equipo Electrónico</td>
+                            <td class="p-3 text-gray-600 text-xs">PC, monitor, teclado, mouse y escaner libres de polvo, manchas o huellas dactilares.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Cajones y Mueble</td>
+                            <td class="p-3 text-gray-600 text-xs">Cajón de dinero y compartimentos internos limpios, sin basura, clips sueltos o polvo.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Superficie de Trabajo</td>
+                            <td class="p-3 text-gray-600 text-xs">Área de empaque limpia y libres de manchas pegajosas.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Suelo del área</td>
+                            <td class="p-3 text-gray-600 text-xs">Piso en área de caja libre de basura, tickets tirados o polvo.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="p-3 bg-gray-50">
+                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones Limpieza:</label>
+                                <textarea rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-white text-xs"></textarea>
+                            </td>
+                        </tr>
+
+                        <!-- Bloque Orden -->
+                        <tr class="bg-gray-100 font-bold text-xs text-gray-700 uppercase border-y">
+                            <td colspan="3" class="p-2 tracking-wide text-orange-600">ORDEN Y SUMINISTROS</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Bolsas Plásticas</td>
+                            <td class="p-3 text-gray-600 text-xs">Bolsas organizadas por tamaño, de fácil acceso.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Organización de Cajones</td>
+                            <td class="p-3 text-gray-600 text-xs">Hojas de códigos, engrapadora, cinta y rollos térmicos de repuesto ubicados exclusivamente en su lugar.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <td class="p-3 font-semibold text-gray-800">Objetos personales</td>
+                            <td class="p-3 text-gray-600 text-xs">El área de trabajo está libre de objetos personales.</td>
+                            <td class="p-2">
+                                <select class="w-full rounded border border-gray-300 p-1 text-xs bg-gray-50">
+                                    <option>No aplica</option>
+                                    <option>Deficiente</option>
+                                    <option>Regular</option>
+                                    <option>Excelente</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="p-3 bg-gray-50">
+                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones Orden y Suministros:</label>
+                                <textarea rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-white text-xs"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botón Imprimir -->
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionCajas', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
+                    Descargar Evaluación
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- LOGICA EN JAVASCRIPT -->
+    <script src="script.js"></script>
+</body>
+</html>
