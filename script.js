@@ -9,7 +9,12 @@ async function generar(a, botonReferencia) {
 
     if (botonReferencia) botonReferencia.style.display = 'none';
     const reemplazos = [];
-    
+    // 0. PROCESAR label
+    const labels = elemento.querySelectorAll('label');
+    labels.forEach(label => {
+        label.style.marginBottom = '1rem';
+    });
+
     // 1. PROCESAR TEXTAREAS
     const textareas = elemento.querySelectorAll('textarea');
     textareas.forEach(textarea => {
@@ -31,7 +36,7 @@ async function generar(a, botonReferencia) {
         divTemporal.style.fontSize = estiloOriginal.fontSize;
         divTemporal.style.lineHeight = estiloOriginal.lineHeight; 
         divTemporal.style.color = estiloOriginal.color;
-        divTemporal.style.padding = estiloOriginal.padding;
+        divTemporal.style.padding = 0;
         divTemporal.style.border = estiloOriginal.border;
         divTemporal.style.borderRadius = estiloOriginal.borderRadius;
         divTemporal.style.backgroundColor = estiloOriginal.backgroundColor;
@@ -67,16 +72,16 @@ async function generar(a, botonReferencia) {
         contenedorFalso.style.border = estiloOriginal.border;
         contenedorFalso.style.borderRadius = estiloOriginal.borderRadius;
         contenedorFalso.style.backgroundColor = estiloOriginal.backgroundColor;
-        contenedorFalso.style.marginTop = estiloOriginal.marginTop;
-        contenedorFalso.style.marginBottom = estiloOriginal.marginBottom;
-        contenedorFalso.style.marginLeft = estiloOriginal.marginLeft;
-        contenedorFalso.style.marginRight = estiloOriginal.marginRight;
+        contenedorFalso.style.marginTop = 0;
+        contenedorFalso.style.marginBottom = 'auto';
+        contenedorFalso.style.marginLeft = 'auto';
+        contenedorFalso.style.marginRight = 'auto';
 
         const textoTemporal = document.createElement('span');
         textoTemporal.innerText = input.value || " ";
         
         textoTemporal.style.position = 'absolute';
-        textoTemporal.style.top = '50%';
+        textoTemporal.style.top = '35%';
         textoTemporal.style.left = '50%';
         textoTemporal.style.transform = 'translate(-50%, -50%)';
         textoTemporal.style.whiteSpace = 'nowrap';
@@ -115,10 +120,9 @@ async function generar(a, botonReferencia) {
         spanTemporal.style.width = dimensiones.width + 'px';
         spanTemporal.style.height = (dimensiones.height - 2) + 'px';
         spanTemporal.style.boxSizing = 'border-box';
-        spanTemporal.style.padding = estiloOriginal.padding;
-        
-        spanTemporal.style.marginTop = estiloOriginal.marginTop;
-        spanTemporal.style.marginBottom = estiloOriginal.marginBottom;
+        spanTemporal.style.padding = 0;
+        spanTemporal.style.marginTop = 0;
+        spanTemporal.style.marginBottom = 'auto';
 
         select.parentNode.insertBefore(spanTemporal, select);
         select.style.display = 'none';
@@ -149,7 +153,7 @@ async function generar(a, botonReferencia) {
         spanFechaTemporal.style.fontSize = estiloOriginal.fontSize;
         spanFechaTemporal.style.lineHeight = estiloOriginal.lineHeight; 
         spanFechaTemporal.style.color = estiloOriginal.color;
-        spanFechaTemporal.style.padding = estiloOriginal.padding;
+        spanFechaTemporal.style.padding = 0;
         
         const dimensiones = elementoFecha.getBoundingClientRect();
         spanFechaTemporal.style.width = dimensiones.width + 'px';
@@ -159,8 +163,8 @@ async function generar(a, botonReferencia) {
         spanFechaTemporal.style.alignItems = 'center';
         spanFechaTemporal.style.justifyContent = 'center';
         spanFechaTemporal.style.boxSizing = 'border-box';
-        spanFechaTemporal.style.marginTop = estiloOriginal.marginTop;
-
+        spanFechaTemporal.style.marginTop = 0;
+        spanFechaTemporal.style.marginBottom = 'auto';
         elementoFecha.parentNode.insertBefore(spanFechaTemporal, elementoFecha);
         elementoFecha.style.display = 'none';
         reemplazos.push({ original: elementoFecha, temporal: spanFechaTemporal });
