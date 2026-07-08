@@ -138,7 +138,7 @@ async function generar(a, botonReferencia) {
             textoFecha = " "; 
         } else {
             if (textoFecha.includes('T')) {
-                const partes = textoFecha.split('T'); 
+                const partes = textoFecha.split('T');
                 const fechaLimpia = partes[0].replace(/-/g, '/'); 
                 const horaLimpia = partes[1];
                 textoFecha = `${fechaLimpia}   ${horaLimpia}`; 
@@ -147,18 +147,15 @@ async function generar(a, botonReferencia) {
 
         const spanFechaTemporal = document.createElement('span');
         const estiloOriginal = window.getComputedStyle(elementoFecha);
-        spanFechaTemporal.innerText = textoFecha;
-        
+        spanFechaTemporal.innerText = textoFecha;        
         spanFechaTemporal.style.fontFamily = estiloOriginal.fontFamily;
         spanFechaTemporal.style.fontSize = estiloOriginal.fontSize;
         spanFechaTemporal.style.lineHeight = estiloOriginal.lineHeight; 
         spanFechaTemporal.style.color = estiloOriginal.color;
         spanFechaTemporal.style.padding = 0;
-        
         const dimensiones = elementoFecha.getBoundingClientRect();
         spanFechaTemporal.style.width = dimensiones.width + 'px';
         spanFechaTemporal.style.height = dimensiones.height + 'px';
-        
         spanFechaTemporal.style.display = 'inline-flex';
         spanFechaTemporal.style.alignItems = 'center';
         spanFechaTemporal.style.justifyContent = 'center';
@@ -472,3 +469,43 @@ construirTablas();
 calcularArqueo();
 calcularRecepcion();
 setTimeout(inicializarFirmas, 150);
+
+// Función para procesar y mostrar las fotografías tomadas desde el teléfono
+function previsualizarImagen(input, idContenedor) {
+    const contenedor = document.getElementById(idContenedor);
+    if (!contenedor) return;
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            // Crear el contenedor individual de la foto
+            const divFoto = document.createElement('div');
+            divFoto.className = 'relative border border-gray-200 rounded-lg overflow-hidden bg-gray-50 aspect-square flex items-center justify-center';
+
+            // Crear la etiqueta de imagen
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'w-full h-full object-cover';
+
+            // Crear botón para eliminar la foto (oculto en la impresión)
+            const btnEliminar = document.createElement('button');
+            btnEliminar.type = 'button';
+            btnEliminar.innerHTML = '&times;';
+            btnEliminar.className = 'no-print absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm shadow transition';
+            btnEliminar.onclick = function() {
+                divFoto.remove();
+            };
+
+            // Armar la estructura
+            divFoto.appendChild(img);
+            divFoto.appendChild(btnEliminar);
+            contenedor.appendChild(divFoto);
+
+            // Limpiar el input para permitir capturar otra foto consecutivamente
+            input.value = '';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
