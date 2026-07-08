@@ -345,6 +345,9 @@
                         <option value="thalia">Thalia</option>
                         <option value="michelle">Michelle</option>
                         <option value="berenice">Berenice</option>
+                        <option value="laura">Laura</option>
+                        <option value="daniel">Daniel</option>
+                        <option value="hector">Hector</option>
                     </select>
                 </div>
                 <div>
@@ -379,7 +382,15 @@
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
                 <textarea id="lopeObsLimpieza" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
             </div>
-            
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
+                <div class="no-print mb-4">
+                    <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <input type="file" id="inputFotoLope" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope1')">
+                    </label>
+                </div>
+            <div id="contenedorFotosLope1" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">ORDEN</div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
@@ -404,6 +415,15 @@
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
                 <textarea id="lopeObsOrden" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
             </div>
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
+                <div class="no-print mb-4">
+                    <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <input type="file" id="inputFotoLope" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope2')">
+                    </label>
+                </div>
+            <div id="contenedorFotosLope2" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
 
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">PRECIO</div>
@@ -447,7 +467,7 @@
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
                 <textarea id="lopeObsExistencia" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
             </div>
-
+        </div>
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionLOPE',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">Descargar Evaluación</button>
             </div>
@@ -490,6 +510,9 @@
                         <option value="thalia">Thalia</option>
                         <option value="michelle">Michelle</option>
                         <option value="berenice">Berenice</option>
+                        <option value="laura">Laura</option>
+                        <option value="daniel">Daniel</option>
+                        <option value="hector">Hector</option>
                     </select>
                 </div>
                 <div>
@@ -621,7 +644,16 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
+                <div class="no-print mb-4">
+                    <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <input type="file" id="inputFotoCajas" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosCajas')">
+                    </label>
+                </div>
+                <div id="contenedorFotosCajas" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
             <!-- Botón Imprimir -->
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionCajas', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
@@ -631,7 +663,6 @@
         </section>
     </main>
 
-    <!-- LOGICA EN JAVASCRIPT -->
     <script src="script.js"></script>
 </body>
 </html>
