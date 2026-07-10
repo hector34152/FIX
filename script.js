@@ -170,7 +170,7 @@ async function generar(a, botonReferencia) {
     // 4. GENERAR EL CANVAS
     try {
         const canvas = await html2canvas(elemento, {
-            scale: 2,           
+            scale: 5,           
             useCORS: true,      
             logging: false,     
             backgroundColor: '#ffffff',
