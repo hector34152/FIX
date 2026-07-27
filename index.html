@@ -2,18 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport configurado para mantener escala fija de escritorio -->
+    <meta name="viewport" content="width=1200, initial-scale=1.0">
     <title>Sistema de Arqueos y Evaluaciones - FIX Ferreterías</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Estilos fijos para evitar colapsos responsivos o reordenamientos móviles */
+        body {
+            min-width: 1150px;
+        }
+        .print-card {
+            width: 28cm !important;
+            max-width: 28cm !important;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 font-sans min-h-screen pb-12">
 
     <!-- Encabezado -->
-    <header class="bg-orange-600 text-white shadow-md no-print">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <header class="w-full bg-orange-600 text-white shadow-md no-print">
+        <div class="w-[28cm] mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
                 <span class="text-2xl font-black tracking-wider text-white">FIX</span>
                 <span class="text-sm font-semibold tracking-wide border-l pl-3 border-orange-400">FERRETERÍAS</span>
@@ -22,7 +34,7 @@
     </header>
 
     <!-- Navegación de Pestañas Agrupadas por Categorías -->
-    <div class="container mx-auto px-4 mt-6 no-print">
+    <div class="w-[28cm] mx-auto px-4 mt-6 no-print">
         <div class="flex space-x-4 border-b border-gray-200">
             
             <!-- Categoría 1: ARQUEOS -->
@@ -79,11 +91,11 @@
         </div>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL -->
-    <main class="container mx-auto px-4 mt-4">
+    <!-- CONTENEDOR PRINCIPAL FIX DE 28CM -->
+    <main class="w-[28cm] h-auto mx-auto px-4 mt-4">
 
         <!-- ================= FORMATO 1: ARQUEO DE CAJA ================= -->
-        <section id="sectionArqueo" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card">
+        <section id="sectionArqueo" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -94,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
                     <input type="text" id="arqEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
@@ -113,7 +125,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-2 gap-6">
                 <div>
                     <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Billetes</h3>
                     <table class="w-full text-sm border-x border-b border-gray-200">
@@ -155,7 +167,7 @@
                 </div>
             </div>
 
-            <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-2 gap-6">
                 <div class="space-y-3">
                     <div class="flex justify-between items-center font-semibold">
                         <span class="text-gray-700">Total Efectivo en Caja (A):</span>
@@ -172,7 +184,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-3 border-t md:border-t-0 md:border-l md:pl-6 border-gray-200">
+                <div class="space-y-3 border-l pl-6 border-gray-200">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-600 text-sm">Venta s/ Sistema:</span>
                         <input type="number" id="arqSistema" step="0.01" value="0.00" oninput="calcularArqueo()" class="w-32 text-right rounded-md border-gray-300 p-1 border font-medium">
@@ -185,7 +197,7 @@
                 </div>
             </div>
 
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+            <div class="mt-12 grid grid-cols-2 gap-8 text-center">
                 <div class="flex flex-col items-center">
                     <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
                         <canvas id="canvasFirmaArqResp" class="w-full h-32 block touch-none"></canvas>
@@ -210,7 +222,7 @@
         </section>
 
         <!-- ================= FORMATO 2: RECEPCIÓN DE FONDO FIJO ================= -->
-        <section id="sectionRecepcion" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+        <section id="sectionRecepcion" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -221,7 +233,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-3 gap-4 mb-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
                     <input type="date" id="recFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
@@ -235,7 +247,7 @@
                     <input type="number" id="recMontoFijo" value="15000" oninput="calcularRecepcion()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 font-bold text-orange-700 bg-gray-50 border">
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 border-t pt-4">
+            <div class="grid grid-cols-2 gap-4 mb-6 border-t pt-4">
                 <div class="p-3 bg-gray-50 rounded border">
                     <span class="text-xs font-black uppercase text-gray-500 block mb-2">Entregado por:</span>
                     <div class="grid grid-cols-2 gap-2">
@@ -252,7 +264,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-2 gap-6">
                 <div>
                     <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Billetes</h3>
                     <table class="w-full text-sm border-x border-b border-gray-200">
@@ -280,7 +292,7 @@
                 </div>
             </div>
 
-            <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <div class="flex justify-between items-center font-medium">
                         <span>Monto Establecido:</span>
@@ -291,7 +303,7 @@
                         <span id="lblTotalEfectivoRec" class="text-orange-600">$0.00</span>
                     </div>
                 </div>
-                <div class="flex flex-col justify-center items-end border-t md:border-t-0 md:border-l md:pl-6 border-gray-200">
+                <div class="flex flex-col justify-center items-end border-l pl-6 border-gray-200">
                     <div id="divDiferenciaRec" class="w-full flex justify-between items-center p-3 rounded font-black text-base bg-gray-100">
                         <span>DIFERENCIA:</span>
                         <span id="lblDiferenciaRec">$0.00</span>
@@ -304,7 +316,7 @@
                 <textarea id="recObservaciones" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
             </div>
 
-            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+            <div class="mt-12 grid grid-cols-2 gap-8 text-center">
                 <div class="flex flex-col items-center">
                     <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
                         <canvas id="canvasFirmaRecEnt" class="w-full h-32 block touch-none"></canvas>
@@ -329,7 +341,7 @@
         </section>
 
         <!-- ================= FORMATO 3: EVALUACION LOPE ================= -->
-        <section id="sectionLOPE" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+        <section id="sectionLOPE" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -340,7 +352,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-5 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
                     <input type="text" id="lopeEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
@@ -358,7 +370,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
-                    <input type="text" id="arqResponsable" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                    <input type="text" id="arqResponsableLope" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
@@ -372,7 +384,7 @@
 
             <div class="block gap-8">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Limpieza</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                <div class="grid grid-cols-2 gap-4 p-4 border-b border-gray-200">
                     <div class="text-sm text-gray-600">
                         Productos y muebles limpios.<br>
                         Producto con empaque en buen estado.<br>
@@ -401,12 +413,12 @@
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope1')">
                     </label>
                 </div>
-                <div id="contenedorFotosLope1" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                <div id="contenedorFotosLope1" class="grid grid-cols-3 gap-4"></div>
             </div>
 
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">ORDEN</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                <div class="grid grid-cols-2 gap-4 p-4 border-b border-gray-200">
                     <div class="text-sm text-gray-600">
                         Producto acomodado, de frente y alineado en su centro de gravedad.<br>
                         Producto rotado.<br>
@@ -436,12 +448,12 @@
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope2')">
                     </label>
                 </div>
-                <div id="contenedorFotosLope2" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                <div id="contenedorFotosLope2" class="grid grid-cols-3 gap-4"></div>
             </div>
 
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">PRECIO</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                <div class="grid grid-cols-2 gap-4 p-4 border-b border-gray-200">
                     <div class="text-sm text-gray-600">Precios actuales.<br>
                         Etiquetas impresas, legibles, alineadas, y en buen estado.<br>
                         La información de la etiqueta debe corresponder a la del producto.<br>
@@ -465,7 +477,7 @@
 
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">EXISTENCIA</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+                <div class="grid grid-cols-2 gap-4 p-4 border-b border-gray-200">
                     <div class="text-sm text-gray-600">Inventario correcto de acuerdo con la capacidad de gancho indicada en la etiqueta.<br>No debe existir ceros en la exhibición.</div>
                     <div>
                         <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
@@ -488,7 +500,7 @@
         </section>
 
         <!-- ================= FORMATO 4: EVALUACIÓN DE CAJAS ================= -->
-        <section id="sectionCajas" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+        <section id="sectionCajas" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -499,7 +511,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
                     <input type="text" id="cajasEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
@@ -516,7 +528,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
-                    <input type="text" id="arqResponsable" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                    <input type="text" id="arqResponsableCajas" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
@@ -648,7 +660,7 @@
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosCajas')">
                     </label>
                 </div>
-                <div id="contenedorFotosCajas" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                <div id="contenedorFotosCajas" class="grid grid-cols-3 gap-4"></div>
             </div>
 
             <div class="mt-8 text-right no-print">
@@ -659,7 +671,7 @@
         </section>
 
         <!-- ================= FORMATO 5: CHECKLIST SUBGERENCIA ================= -->
-        <section id="sectionSubgerencia" class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto print-card hidden">
+        <section id="sectionSubgerencia" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -670,7 +682,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
                     <input type="text" id="subEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
@@ -709,12 +721,12 @@
                             <td class="p-2">Todo debe estar correctamente al aperturar la tienda</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -723,12 +735,12 @@
                             <td class="p-2">No deben existir ceros o desnivelados al aperturar de tienda</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -737,12 +749,12 @@
                             <td class="p-2">Asegurar el llenado de forma correcta</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -751,12 +763,12 @@
                             <td class="p-2">No deben existir ceros en la categoria de Resurtido. (en caso de tener ceros en resurtido, analizar las causas y corregir para que sean surtidos por almacen)</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -765,12 +777,12 @@
                             <td class="p-2">Corregir todas las areas de oportunidad apoyandose con el personal de piso</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -779,12 +791,12 @@
                             <td class="p-2">Las incidencias encontradas se deben corregir una vez que se identifican.</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -793,12 +805,12 @@
                             <td class="p-2">Garantizar confiabilidad de inventarios</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -807,12 +819,12 @@
                             <td class="p-2">Se deben colocar en gancho de inmediato los productos que se encuentren en cero.</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -821,12 +833,12 @@
                             <td class="p-2">Se deben revisar todos los planogramas a lo largo de un mes apoyandose de</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
@@ -835,17 +847,26 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
+                <div class="no-print mb-4">
+                    <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosSubgerencia')">
+                    </label>
+                </div>
+                <div id="contenedorFotosSubgerencia" class="grid grid-cols-3 gap-4"></div>
+            </div>
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionSubgerencia', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Checklist
@@ -854,7 +875,7 @@
         </section>
 
         <!-- ================= FORMATO 6: CHECKLIST GERENCIA ================= -->
-        <section id="sectionGerencia" class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto print-card hidden">
+        <section id="sectionGerencia" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -865,7 +886,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
                     <input type="text" id="gerEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
@@ -904,12 +925,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -918,12 +939,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -932,12 +953,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -951,7 +972,7 @@
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -960,12 +981,12 @@
                             <td class="p-2">Tener el sistema POSPLUS en optimo funcionamiento</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -974,12 +995,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -988,12 +1009,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1002,12 +1023,12 @@
                             <td class="p-2">Evitar mala atencion o una atencion tardia</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1016,12 +1037,12 @@
                             <td class="p-2">Evitar mala atencion o una atencion tardia</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1030,12 +1051,12 @@
                             <td class="p-2">No tener ceros con mas de 1 hora de no sacar de almacen, y analizar ceros que no tengan venta y no esten en piso de venta y descartar robos</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1044,12 +1065,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1062,12 +1083,12 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1076,12 +1097,12 @@
                             <td class="p-2">mantener menos del 60 % de ventas a precio de fabrica</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Gerencia</td>
@@ -1090,17 +1111,26 @@
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">✓ Cumple</option>
-                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="CUMPLE">Cumple</option>
+                                    <option value="NO CUMPLE">No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
-                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                            <td class="p-1"><textarea rows="1" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-xs"></textarea></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
+                <div class="no-print mb-4">
+                    <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosGerencia')">
+                    </label>
+                </div>
+                <div id="contenedorFotosGerencia" class="grid grid-cols-3 gap-4"></div>
+            </div>
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionGerencia', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Checklist
@@ -1109,7 +1139,7 @@
         </section>
 
         <!-- ================= FORMATO 7: CONTROL DE ACTIVIDADES ================= -->
-        <section id="sectionActividades" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+        <section id="sectionActividades" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
@@ -1120,7 +1150,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-3 gap-4 mb-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empleado</label>
                     <input type="text" id="actEmpleado" placeholder="Nombre de empleado" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
@@ -1134,7 +1164,7 @@
                     <input type="text" id="actArea" placeholder="Área asignada" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-2 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
                     <input type="date" id="actFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
@@ -1217,7 +1247,20 @@
                     <span>Actividad con retraso</span>
                 </div>
             </div>
-
+            <div class="mt-4">
+                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
+                <textarea id="recObservaciones" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
+            </div>
+            <div class="mt-8 border-t pt-6">
+                <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
+                <div class="no-print mb-4">
+                    <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosactividades')">
+                    </label>
+                </div>
+                <div id="contenedorFotosactividades" class="grid grid-cols-3 gap-4"></div>
+            </div>
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionActividades', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Evaluación
