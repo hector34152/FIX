@@ -1,3 +1,44 @@
+// ==========================================
+// FUNCIONES AUXILIARES DE FORMATEO
+// ==========================================
+
+/**
+ * Convierte 'AAAA-MM-DD' a 'DD/MM/AAAA'
+ */
+function formatearFecha(fechaStr) {
+    if (!fechaStr || fechaStr.trim() === '') return '';
+    if (fechaStr instanceof Date) {
+        fechaStr = fechaStr.toISOString().split('T')[0];
+    }
+    const partes = fechaStr.split('-');
+    if (partes.length !== 3) return fechaStr;
+    const [year, month, day] = partes;
+    return `${day}/${month}/${year}`;
+}
+
+/**
+ * Convierte 'HH:MM' (24 hrs) a 'HH:MM AM/PM' (12 hrs)
+ */
+function formatearHora(horaStr) {
+    if (!horaStr || horaStr.trim() === '') return '';
+    const partes = horaStr.split(':');
+    let horas = parseInt(partes[0], 10);
+    const minutos = partes[1];
+    
+    if (isNaN(horas) || !minutos) return horaStr;
+    
+    const ampm = horas >= 12 ? 'PM' : 'AM';
+    horas = horas % 12;
+    horas = horas ? horas : 12; // La hora 00 corresponde a las 12 AM
+    
+    const horasFormateadas = String(horas).padStart(2, '0');
+    return `${horasFormateadas}:${minutos} ${ampm}`;
+}
+
+// ==========================================
+// FUNCIÓN PRINCIPAL DE GENERACIÓN DE IMAGEN
+// ==========================================
+
 async function generar(a, botonReferencia) {
     const elemento = document.getElementById(a);
     
@@ -9,6 +50,7 @@ async function generar(a, botonReferencia) {
 
     if (botonReferencia) botonReferencia.style.display = 'none';
     const reemplazos = [];
+
     // 0. PROCESAR label
     const labels = elemento.querySelectorAll('label');
     labels.forEach(label => {
@@ -36,7 +78,7 @@ async function generar(a, botonReferencia) {
         divTemporal.style.fontSize = estiloOriginal.fontSize;
         divTemporal.style.lineHeight = estiloOriginal.lineHeight; 
         divTemporal.style.color = estiloOriginal.color;
-        divTemporal.style.padding = 0;
+        divTemporal.style.padding = '0.25rem';
         divTemporal.style.border = estiloOriginal.border;
         divTemporal.style.borderRadius = estiloOriginal.borderRadius;
         divTemporal.style.backgroundColor = estiloOriginal.backgroundColor;
@@ -51,7 +93,7 @@ async function generar(a, botonReferencia) {
         reemplazos.push({ original: textarea, temporal: divTemporal });
     });
 
-    // 1.5. PROCESAR INPUTS (SOLUCIÓN MEDIANTE POSICIONAMIENTO ABSOLUTO)
+    // 1.5. PROCESAR INPUTS (TEXT / NUMBER)
     const inputsComunes = elemento.querySelectorAll('input[type="number"], input[type="text"]:not(.date-box)');
     inputsComunes.forEach(input => {
         const padre = input.parentNode;
@@ -72,7 +114,7 @@ async function generar(a, botonReferencia) {
         contenedorFalso.style.border = estiloOriginal.border;
         contenedorFalso.style.borderRadius = estiloOriginal.borderRadius;
         contenedorFalso.style.backgroundColor = estiloOriginal.backgroundColor;
-        contenedorFalso.style.marginTop = 0;
+        contenedorFalso.style.marginTop = '0';
         contenedorFalso.style.marginBottom = 'auto';
         contenedorFalso.style.marginLeft = 'auto';
         contenedorFalso.style.marginRight = 'auto';
@@ -81,7 +123,7 @@ async function generar(a, botonReferencia) {
         textoTemporal.innerText = input.value || " ";
         
         textoTemporal.style.position = 'absolute';
-        textoTemporal.style.top = '35%';
+        textoTemporal.style.top = '50%';
         textoTemporal.style.left = '50%';
         textoTemporal.style.transform = 'translate(-50%, -50%)';
         textoTemporal.style.whiteSpace = 'nowrap';
@@ -96,6 +138,22 @@ async function generar(a, botonReferencia) {
         input.style.display = 'none';
         
         reemplazos.push({ original: input, temporal: contenedorFalso });
+    });
+
+    // 1.6 PROCESAR INPUTS RADIO
+    const radios = elemento.querySelectorAll('input[type="radio"]');
+    radios.forEach(radio => {
+        const spanRadio = document.createElement('span');
+        spanRadio.style.display = 'inline-block';
+        spanRadio.style.width = '16px';
+        spanRadio.style.height = '16px';
+        spanRadio.style.borderRadius = '50%';
+        spanRadio.style.border = '2px solid #374151';
+        spanRadio.style.backgroundColor = radio.checked ? '#111827' : '#ffffff';
+        
+        radio.parentNode.insertBefore(spanRadio, radio);
+        radio.style.display = 'none';
+        reemplazos.push({ original: radio, temporal: spanRadio });
     });
 
     // 2. PROCESAR SELECTS
@@ -120,8 +178,8 @@ async function generar(a, botonReferencia) {
         spanTemporal.style.width = dimensiones.width + 'px';
         spanTemporal.style.height = (dimensiones.height - 2) + 'px';
         spanTemporal.style.boxSizing = 'border-box';
-        spanTemporal.style.padding = 0;
-        spanTemporal.style.marginTop = 0;
+        spanTemporal.style.padding = '0';
+        spanTemporal.style.marginTop = '0';
         spanTemporal.style.marginBottom = 'auto';
 
         select.parentNode.insertBefore(spanTemporal, select);
@@ -129,30 +187,29 @@ async function generar(a, botonReferencia) {
         reemplazos.push({ original: select, temporal: spanTemporal });
     });
 
-    // 3. PROCESAR FECHAS E INPUTS DATETIME
-    const elementoFecha = elemento.querySelector('.date-box') || elemento.querySelector('input[type="date"]');
-    if (elementoFecha) {
-        let textoFecha = elementoFecha.value || elementoFecha.innerText || elementoFecha.textContent;
-        
-        if (!textoFecha || textoFecha.trim() === "") {
-            textoFecha = " "; 
+    // 3. PROCESAR FECHAS E INPUTS DATETIME / TIME
+    const inputsFechaHora = elemento.querySelectorAll('input[type="date"], input[type="time"]');
+    inputsFechaHora.forEach(elementoFecha => {
+        let valorRaw = elementoFecha.value || "";
+        let textoFechaHora = " ";
+
+        // Formateo según el tipo de input
+        if (elementoFecha.type === 'date') {
+            textoFechaHora = formatearFecha(valorRaw);
+        } else if (elementoFecha.type === 'time') {
+            textoFechaHora = formatearHora(valorRaw);
         } else {
-            if (textoFecha.includes('T')) {
-                const partes = textoFecha.split('T');
-                const fechaLimpia = partes[0].replace(/-/g, '/'); 
-                const horaLimpia = partes[1];
-                textoFecha = `${fechaLimpia}   ${horaLimpia}`; 
-            }
+            textoFechaHora = valorRaw;
         }
 
         const spanFechaTemporal = document.createElement('span');
         const estiloOriginal = window.getComputedStyle(elementoFecha);
-        spanFechaTemporal.innerText = textoFecha;        
+        spanFechaTemporal.innerText = textoFechaHora || " ";        
         spanFechaTemporal.style.fontFamily = estiloOriginal.fontFamily;
         spanFechaTemporal.style.fontSize = estiloOriginal.fontSize;
         spanFechaTemporal.style.lineHeight = estiloOriginal.lineHeight; 
         spanFechaTemporal.style.color = estiloOriginal.color;
-        spanFechaTemporal.style.padding = 0;
+        spanFechaTemporal.style.padding = '0';
         const dimensiones = elementoFecha.getBoundingClientRect();
         spanFechaTemporal.style.width = dimensiones.width + 'px';
         spanFechaTemporal.style.height = dimensiones.height + 'px';
@@ -160,17 +217,19 @@ async function generar(a, botonReferencia) {
         spanFechaTemporal.style.alignItems = 'center';
         spanFechaTemporal.style.justifyContent = 'center';
         spanFechaTemporal.style.boxSizing = 'border-box';
-        spanFechaTemporal.style.marginTop = 0;
+        spanFechaTemporal.style.padding = '0';
+        spanFechaTemporal.style.marginTop = '0';
         spanFechaTemporal.style.marginBottom = 'auto';
+
         elementoFecha.parentNode.insertBefore(spanFechaTemporal, elementoFecha);
         elementoFecha.style.display = 'none';
         reemplazos.push({ original: elementoFecha, temporal: spanFechaTemporal });
-    }
+    });
 
     // 4. GENERAR EL CANVAS
     try {
         const canvas = await html2canvas(elemento, {
-            scale: 5,           
+            scale: 3,           
             useCORS: true,      
             logging: false,     
             backgroundColor: '#ffffff',
@@ -183,7 +242,7 @@ async function generar(a, botonReferencia) {
         const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
         const enlaceDescarga = document.createElement('a');
-        enlaceDescarga.download = `Evaluacion_.jpg`;
+        enlaceDescarga.download = `Reporte_${a}.jpg`;
         enlaceDescarga.href = imgData;
         enlaceDescarga.click();
 
@@ -191,7 +250,6 @@ async function generar(a, botonReferencia) {
         console.error("Error al generar la imagen JPEG:", error);
         alert("Hubo un problema al generar la imagen del reporte.");
     } finally {
-        // Restaurar elementos originales
         reemplazos.forEach(item => {
             item.temporal.remove();
             item.original.style.display = ''; 
@@ -201,22 +259,29 @@ async function generar(a, botonReferencia) {
     }
 }
 
-// Denominaciones de diseño de moneda mexicana (MXN)
+// ==========================================
+// TABLAS, CÁLCULOS Y FUNCIONALIDADES DE PÁGINA
+// ==========================================
+
+// Denominaciones (MXN)
 const denBilletes = [1000, 500, 200, 100, 50, 20];
 const denMonedas = [10, 5, 2, 1, 0.5];
 
-// Inicializar Fechas actuales por defecto
-if (document.getElementById('arqFecha')) document.getElementById('arqFecha').valueAsDate = new Date();
-if (document.getElementById('recFecha')) document.getElementById('recFecha').valueAsDate = new Date();
-if (document.getElementById('lopeFecha')) document.getElementById('lopeFecha').valueAsDate = new Date();
-if (document.getElementById('cajasFecha')) document.getElementById('cajasFecha').valueAsDate = new Date();
+// Inicializar Fechas actuales
+['arqFecha', 'recFecha', 'lopeFecha', 'cajasFecha', 'subFecha', 'gerFecha', 'actFecha'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.valueAsDate = new Date();
+});
 
-// Colocar hora actual aproximada
+// Colocar hora actual
 const ahora = new Date();
 const horaStr = String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
-if (document.getElementById('arqHora')) document.getElementById('arqHora').value = horaStr;
+['arqHora', 'recHora', 'lopeHora', 'subHora', 'gerHora', 'actHora'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = horaStr;
+});
 
-// Generar dinámicamente las vistas de tablas
+// Generar dinámicamente tablas de arqueo y recepción
 function construirTablas() {
     const tbodyBArqueo = document.getElementById('tbodyBilletesArqueo');
     if (tbodyBArqueo) {
@@ -267,7 +332,6 @@ function construirTablas() {
     }
 }
 
-// Cálculos del Formato de Arqueo Diario
 function calcularArqueo() {
     let totalBilletes = 0;
     denBilletes.forEach(d => {
@@ -328,7 +392,6 @@ function calcularArqueo() {
     }
 }
 
-// Cálculos del Formato de Recepción / Fondo Fijo
 function calcularRecepcion() {
     let totalBilletes = 0;
     denBilletes.forEach(d => {
@@ -385,49 +448,49 @@ function calcularRecepcion() {
     }
 }
 
-// Manejador de intercambio de Pestañas
+// Manejador de pestañas y categorías
 function switchTab(tab) {
-    const tabArq = document.getElementById('btnTabArqueo');
-    const tabRec = document.getElementById('btnTabRecepcion');
-    const tabLOPE = document.getElementById('btnTabLOPE');
-    const tabCajas = document.getElementById('btnTabCajas');
-    
-    const secArq = document.getElementById('sectionArqueo');
-    const secRec = document.getElementById('sectionRecepcion');
-    const secLOPE = document.getElementById('sectionLOPE');
-    const secCajas = document.getElementById('sectionCajas');
+    const tabs = {
+        'arqueo': { btn: 'btnTabArqueo', groupBtn: 'btnGroupArqueos', sec: 'sectionArqueo' },
+        'recepcion': { btn: 'btnTabRecepcion', groupBtn: 'btnGroupArqueos', sec: 'sectionRecepcion' },
+        'cajas': { btn: 'btnTabCajas', groupBtn: 'btnGroupEvaluacion', sec: 'sectionCajas' },
+        'LOPE': { btn: 'btnTabLOPE', groupBtn: 'btnGroupEvaluacion', sec: 'sectionLOPE' },
+        'actividades': { btn: 'btnTabActividades', groupBtn: 'btnGroupEvaluacion', sec: 'sectionActividades' },
+        'gerencia': { btn: 'btnTabGerencia', groupBtn: 'btnGroupChecklist', sec: 'sectionGerencia' },
+        'subgerencia': { btn: 'btnTabSubgerencia', groupBtn: 'btnGroupChecklist', sec: 'sectionSubgerencia' }
+    };
 
-    const claseInactivo = "py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap";
-    const claseActivo = "py-2 px-4 font-semibold text-sm rounded-t-lg bg-white border-t border-x border-gray-200 text-orange-600 -mb-px z-10 whitespace-nowrap";
-    
-    if (tabArq) tabArq.className = claseInactivo;
-    if (tabRec) tabRec.className = claseInactivo;
-    if (tabLOPE) tabLOPE.className = claseInactivo;
-    if (tabCajas) tabCajas.className = claseInactivo;
+    const groupBtns = ['btnGroupArqueos', 'btnGroupEvaluacion', 'btnGroupChecklist'];
 
-    if (secArq) secArq.classList.add('hidden');
-    if (secRec) secRec.classList.add('hidden');
-    if (secLOPE) secLOPE.classList.add('hidden');
-    if (secCajas) secCajas.classList.add('hidden');
+    // Restablecer estilos de grupos
+    groupBtns.forEach(gId => {
+        const gEl = document.getElementById(gId);
+        if (gEl) {
+            gEl.className = "font-semibold text-sm text-gray-500 hover:text-orange-600 flex items-center space-x-1 focus:outline-none";
+        }
+    });
 
-    if(tab === 'arqueo' && secArq && tabArq) {
-        secArq.classList.remove('hidden');
-        tabArq.className = claseActivo;
-    } else if(tab === 'recepcion' && secRec && tabRec) {
-        secRec.classList.remove('hidden');
-        tabRec.className = claseActivo;
-    } else if(tab === 'LOPE' && secLOPE && tabLOPE) {
-        secLOPE.classList.remove('hidden');
-        tabLOPE.className = claseActivo;
-    } else if(tab === 'cajas' && secCajas && tabCajas) {
-        secCajas.classList.remove('hidden');
-        tabCajas.className = claseActivo;
+    // Ocultar todas las secciones
+    Object.keys(tabs).forEach(key => {
+        const secEl = document.getElementById(tabs[key].sec);
+        if (secEl) secEl.classList.add('hidden');
+    });
+
+    // Activar sección elegida y resaltar categoría activa
+    if (tabs[tab]) {
+        const activeSec = document.getElementById(tabs[tab].sec);
+        const activeGroupBtn = document.getElementById(tabs[tab].groupBtn);
+
+        if (activeSec) activeSec.classList.remove('hidden');
+        if (activeGroupBtn) {
+            activeGroupBtn.className = "font-extrabold text-sm text-orange-600 flex items-center space-x-1 focus:outline-none border-b-2 border-orange-600 pb-1";
+        }
     }
-    
+
     setTimeout(inicializarFirmas, 60);
 }
 
-// LÓGICA DE FIRMAS DIGITALES (SIGNATURE PAD)
+// Firmas digitales
 const pads = {};
 
 function inicializarFirmas() {
@@ -456,21 +519,13 @@ function inicializarFirmas() {
 }
 
 function clearSignature(id) {
-    if (pads[id]) {
-        pads[id].clear();
-    }
+    if (pads[id]) pads[id].clear();
 }
 
 window.addEventListener('resize', () => {
     setTimeout(inicializarFirmas, 150);
 });
 
-construirTablas();
-calcularArqueo();
-calcularRecepcion();
-setTimeout(inicializarFirmas, 150);
-
-// Función para procesar y mostrar las fotografías tomadas desde el teléfono
 function previsualizarImagen(input, idContenedor) {
     const contenedor = document.getElementById(idContenedor);
     if (!contenedor) return;
@@ -479,16 +534,13 @@ function previsualizarImagen(input, idContenedor) {
         const reader = new FileReader();
 
         reader.onload = function(e) {
-            // Crear el contenedor individual de la foto
             const divFoto = document.createElement('div');
             divFoto.className = 'relative border border-gray-200 rounded-lg overflow-hidden bg-gray-50 aspect-square flex items-center justify-center';
 
-            // Crear la etiqueta de imagen
             const img = document.createElement('img');
             img.src = e.target.result;
             img.className = 'w-full h-full object-cover';
 
-            // Crear botón para eliminar la foto (oculto en la impresión)
             const btnEliminar = document.createElement('button');
             btnEliminar.type = 'button';
             btnEliminar.innerHTML = '&times;';
@@ -497,15 +549,19 @@ function previsualizarImagen(input, idContenedor) {
                 divFoto.remove();
             };
 
-            // Armar la estructura
             divFoto.appendChild(img);
             divFoto.appendChild(btnEliminar);
             contenedor.appendChild(divFoto);
 
-            // Limpiar el input para permitir capturar otra foto consecutivamente
             input.value = '';
         };
 
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+construirTablas();
+calcularArqueo();
+calcularRecepcion();
+switchTab('arqueo');
+setTimeout(inicializarFirmas, 150);
