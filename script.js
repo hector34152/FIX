@@ -111,9 +111,9 @@ async function generar(a, botonReferencia) {
         contenedorFalso.style.boxSizing = 'border-box';
         contenedorFalso.style.display = 'inline-block';
         contenedorFalso.style.position = 'relative';
-    //    contenedorFalso.style.border = estiloOriginal.border;
-  //      contenedorFalso.style.borderRadius = estiloOriginal.borderRadius;
-//        contenedorFalso.style.backgroundColor = estiloOriginal.backgroundColor;
+        contenedorFalso.style.border = 'none';
+        contenedorFalso.style.borderRadius = 'none';
+        contenedorFalso.style.backgroundColor = 'none';
         contenedorFalso.style.marginTop = '0';
         contenedorFalso.style.marginBottom = 'auto';
         contenedorFalso.style.marginLeft = 'auto';
