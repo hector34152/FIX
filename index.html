@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Arqueos - FIX Ferreterías</title>
-    <!-- Tailwind CSS para un diseño profesional y limpio -->
+    <title>Sistema de Arqueos y Evaluaciones - FIX Ferreterías</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -18,25 +18,64 @@
                 <span class="text-2xl font-black tracking-wider text-white">FIX</span>
                 <span class="text-sm font-semibold tracking-wide border-l pl-3 border-orange-400">FERRETERÍAS</span>
             </div>
-            <h1 class="text-xl font-bold">FORMATOS DE CONTROL</h1>
         </div>
     </header>
 
-    <!-- Navegación de Pestañas (Formatos) -->
+    <!-- Navegación de Pestañas Agrupadas por Categorías -->
     <div class="container mx-auto px-4 mt-6 no-print">
-        <div class="flex space-x-2 border-b border-gray-200 overflow-x-auto">
-            <button id="btnTabArqueo" onclick="switchTab('arqueo')" class="py-2 px-4 font-semibold text-sm rounded-t-lg bg-white border-t border-x border-gray-200 text-orange-600 -mb-px z-10 whitespace-nowrap">
-                1. Arqueo de Caja de Turno
-            </button>
-            <button id="btnTabRecepcion" onclick="switchTab('recepcion')" class="py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap">
-                2. Recepción de Fondo Fijo
-            </button>
-            <button id="btnTabLOPE" onclick="switchTab('LOPE')" class="py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap">
-                3. Evaluacion LOPE
-            </button>
-            <button id="btnTabCajas" onclick="switchTab('cajas')" class="py-2 px-4 font-semibold text-sm rounded-t-lg text-gray-500 hover:text-gray-700 whitespace-nowrap">
-                4. Evaluación de Cajas
-            </button>
+        <div class="flex space-x-4 border-b border-gray-200">
+            
+            <!-- Categoría 1: ARQUEOS -->
+            <div class="relative group py-2">
+                <button id="btnGroupArqueos" class="font-semibold text-sm text-gray-500 hover:text-orange-600 flex items-center space-x-1 focus:outline-none">
+                    <span>ARQUEOS</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 hidden group-hover:block z-50">
+                    <button id="btnTabArqueo" onclick="switchTab('arqueo')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Arqueo de Caja
+                    </button>
+                    <button id="btnTabRecepcion" onclick="switchTab('recepcion')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Recepción Fondo Fijo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categoría 2: EVALUACIÓN -->
+            <div class="relative group py-2">
+                <button id="btnGroupEvaluacion" class="font-semibold text-sm text-gray-500 hover:text-orange-600 flex items-center space-x-1 focus:outline-none">
+                    <span>EVALUACIÓN</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 hidden group-hover:block z-50">
+                    <button id="btnTabCajas" onclick="switchTab('cajas')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Evaluación de Cajas
+                    </button>
+                    <button id="btnTabLOPE" onclick="switchTab('LOPE')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Evaluación LOPE
+                    </button>
+                    <button id="btnTabActividades" onclick="switchTab('actividades')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Control de Actividades
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categoría 3: CHECKLIST -->
+            <div class="relative group py-2">
+                <button id="btnGroupChecklist" class="font-semibold text-sm text-gray-500 hover:text-orange-600 flex items-center space-x-1 focus:outline-none">
+                    <span>CHECKLIST</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 hidden group-hover:block z-50">
+                    <button id="btnTabGerencia" onclick="switchTab('gerencia')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Checklist Gerencia
+                    </button>
+                    <button id="btnTabSubgerencia" onclick="switchTab('subgerencia')" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-600">
+                        Checklist Subgerencia
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -51,11 +90,10 @@
                     <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Formato: Arqueo Cajero</p>
                 </div>
                 <div class="text-right">
-                    <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Arque de Caja</span>
+                    <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Arqueo de Caja</span>
                 </div>
             </div>
 
-            <!-- Datos Generales -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
@@ -75,9 +113,7 @@
                 </div>
             </div>
 
-            <!-- Tablas de Denominaciones -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Billetes -->
                 <div>
                     <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Billetes</h3>
                     <table class="w-full text-sm border-x border-b border-gray-200">
@@ -88,9 +124,7 @@
                                 <th class="p-2 text-right">Valor Total</th>
                             </tr>
                         </thead>
-                        <tbody id="tbodyBilletesArqueo">
-                            <!-- JS generará las filas aquí -->
-                        </tbody>
+                        <tbody id="tbodyBilletesArqueo"></tbody>
                         <tfoot>
                             <tr class="bg-gray-50 font-bold border-t">
                                 <td colspan="2" class="p-2 text-right">Total Billetes:</td>
@@ -100,7 +134,6 @@
                     </table>
                 </div>
 
-                <!-- Monedas -->
                 <div>
                     <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Monedas</h3>
                     <table class="w-full text-sm border-x border-b border-gray-200">
@@ -111,9 +144,7 @@
                                 <th class="p-2 text-right">Valor Total</th>
                             </tr>
                         </thead>
-                        <tbody id="tbodyMonedasArqueo">
-                            <!-- JS generará las filas aquí -->
-                        </tbody>
+                        <tbody id="tbodyMonedasArqueo"></tbody>
                         <tfoot>
                             <tr class="bg-gray-50 font-bold border-t">
                                 <td colspan="2" class="p-2 text-right">Total Monedas:</td>
@@ -124,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Cálculos de Cierre y Diferencia -->
             <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-3">
                     <div class="flex justify-between items-center font-semibold">
@@ -155,7 +185,6 @@
                 </div>
             </div>
 
-            <!-- Firmas Digitales -->
             <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                 <div class="flex flex-col items-center">
                     <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
@@ -173,7 +202,6 @@
                 </div>
             </div>
 
-            <!-- Botón Imprimir -->
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionArqueo',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Arqueo
@@ -193,7 +221,6 @@
                 </div>
             </div>
 
-            <!-- Datos Generales -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
@@ -201,7 +228,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
-                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                    <input type="time" id="recHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Monto Recibido Esp. ($)</label>
@@ -225,9 +252,7 @@
                 </div>
             </div>
 
-            <!-- Tablas Desglose -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Billetes -->
                 <div>
                     <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Billetes</h3>
                     <table class="w-full text-sm border-x border-b border-gray-200">
@@ -241,7 +266,6 @@
                     </table>
                 </div>
 
-                <!-- Monedas -->
                 <div>
                     <h3 class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Monedas</h3>
                     <table class="w-full text-sm border-x border-b border-gray-200">
@@ -256,7 +280,6 @@
                 </div>
             </div>
 
-            <!-- Totales de Entrega -->
             <div class="mt-8 bg-gray-50 p-4 rounded-lg border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <div class="flex justify-between items-center font-medium">
@@ -276,13 +299,11 @@
                 </div>
             </div>
 
-            <!-- Observaciones -->
             <div class="mt-4">
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
                 <textarea id="recObservaciones" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
             </div>
 
-            <!-- Firmas Digitales -->
             <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                 <div class="flex flex-col items-center">
                     <div class="w-4/5 border border-gray-300 rounded bg-gray-50 relative">
@@ -300,7 +321,6 @@
                 </div>
             </div>
 
-            <!-- Botón Imprimir -->
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionRecepcion',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Recepción
@@ -319,7 +339,7 @@
                     <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Evaluación LOPE</span>
                 </div>
             </div>
-            <!-- Datos Generales -->
+
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
@@ -338,17 +358,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
-                        <option value="nayeli">Nayeli</option>
-                        <option value="valeria">Valeria</option>
-                        <option value="salma">Salma</option>
-                        <option value="thalia">Thalia</option>
-                        <option value="michelle">Michelle</option>
-                        <option value="berenice">Berenice</option>
-                        <option value="laura">Laura</option>
-                        <option value="daniel">Daniel</option>
-                        <option value="hector">Hector</option>
-                    </select>
+                    <input type="text" id="arqResponsable" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
@@ -356,9 +366,10 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
-                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                    <input type="time" id="lopeHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
             </div>
+
             <div class="block gap-8">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">Limpieza</div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
@@ -387,18 +398,20 @@
                 <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <input type="file" id="inputFotoLope" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope1')">
+                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope1')">
                     </label>
                 </div>
-            <div id="contenedorFotosLope1" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                <div id="contenedorFotosLope1" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
+
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">ORDEN</div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
                     <div class="text-sm text-gray-600">
-                        Producto acomodado, de frente y alineado en su centro de gravedad. <br>
+                        Producto acomodado, de frente y alineado en su centro de gravedad.<br>
                         Producto rotado.<br>
                         Producto careado.<br>
-                        Producto distribuido. <br>
+                        Producto distribuido.<br>
                         Respeta el planograma.
                     </div>
                     <div>
@@ -420,10 +433,11 @@
                 <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <input type="file" id="inputFotoLope" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope2')">
+                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosLope2')">
                     </label>
                 </div>
-            <div id="contenedorFotosLope2" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+                <div id="contenedorFotosLope2" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
 
             <div class="mt-6">
                 <div class="bg-gray-800 text-white text-xs font-bold uppercase p-2 rounded-t-md tracking-wider">PRECIO</div>
@@ -432,7 +446,7 @@
                         Etiquetas impresas, legibles, alineadas, y en buen estado.<br>
                         La información de la etiqueta debe corresponder a la del producto.<br>
                         Graficos, etiquetas especiales y fichas técnicas en buen estado.<br>
-                        Graficos de promociòn vigentes y en buen estado.
+                        Graficos de promoción vigentes y en buen estado.
                     </div>
                     <div>
                         <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
@@ -467,7 +481,7 @@
                 <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Observaciones:</label>
                 <textarea id="lopeObsExistencia" rows="2" class="w-full rounded-md border-gray-300 p-2 border bg-gray-50 text-sm"></textarea>
             </div>
-        </div>
+
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionLOPE',this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">Descargar Evaluación</button>
             </div>
@@ -485,47 +499,31 @@
                 </div>
             </div>
 
-            <!-- Datos Generales -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
-                    <input type="text" id="lopeEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                    <input type="text" id="cajasEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">CAJA</label>
                     <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
-                        <option value="area1">CAJA 1</option>
-                        <option value="area2">CAJA 2</option>
-                        <option value="area3">CAJA 3</option>
-                        <option value="area4">CAJA 4</option>
-                        <option value="area5">CAJA 5</option>
+                        <option value="caja1">CAJA 1</option>
+                        <option value="caja2">CAJA 2</option>
+                        <option value="caja3">CAJA 3</option>
+                        <option value="caja4">CAJA 4</option>
+                        <option value="caja5">CAJA 5</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Cajero</label>
-                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
-                        <option value="nayeli">Nayeli</option>
-                        <option value="valeria">Valeria</option>
-                        <option value="salma">Salma</option>
-                        <option value="thalia">Thalia</option>
-                        <option value="michelle">Michelle</option>
-                        <option value="berenice">Berenice</option>
-                        <option value="laura">Laura</option>
-                        <option value="daniel">Daniel</option>
-                        <option value="hector">Hector</option>
-                    </select>
+                    <input type="text" id="arqResponsable" placeholder="Nombre del cajero" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
-                    <input type="date" id="lopeFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
-                    <input type="time" id="arqHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
+                    <input type="date" id="cajasFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border">
                 </div>
             </div>
 
-            <!-- Tabla de Evaluación -->
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left border border-gray-200 rounded-md">
                     <thead>
@@ -536,7 +534,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Bloque Limpieza -->
                         <tr class="bg-gray-100 font-bold text-xs text-gray-700 uppercase border-b">
                             <td colspan="3" class="p-2 tracking-wide text-orange-600">LIMPIEZA</td>
                         </tr>
@@ -595,7 +592,6 @@
                             </td>
                         </tr>
 
-                        <!-- Bloque Orden -->
                         <tr class="bg-gray-100 font-bold text-xs text-gray-700 uppercase border-y">
                             <td colspan="3" class="p-2 tracking-wide text-orange-600">ORDEN Y SUMINISTROS</td>
                         </tr>
@@ -649,14 +645,581 @@
                 <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <input type="file" id="inputFotoCajas" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosCajas')">
+                        <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosCajas')">
                     </label>
                 </div>
                 <div id="contenedorFotosCajas" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
             </div>
-            <!-- Botón Imprimir -->
+
             <div class="mt-8 text-right no-print">
                 <button onclick="generar('sectionCajas', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
+                    Descargar Evaluación
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FORMATO 5: CHECKLIST SUBGERENCIA ================= -->
+        <section id="sectionSubgerencia" class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto print-card hidden">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Checklist de Subgerencia</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Subgerencia</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
+                    <input type="text" id="subEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Subgerente</label>
+                    <input type="text" id="subResponsable" placeholder="Nombre del responsable" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="subFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="subHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border border-gray-200 rounded-md">
+                    <thead>
+                        <tr class="bg-gray-800 text-white font-bold uppercase tracking-wider">
+                            <th class="p-2 w-24">ÁREA</th>
+                            <th class="p-2 w-32">ACTIVIDAD</th>
+                            <th class="p-2">OBJETIVO</th>
+                            <th class="p-2 w-48">KPI / INDICADOR</th>
+                            <th class="p-2 w-24 text-center">ESTADO</th>
+                            <th class="p-2 w-40">OBSERVACIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Area de cajas</td>
+                            <td class="p-2">Verificar que todos los puntos de venta funcionen correctamente (Equipos de computo, terminales bancarias y caja de dinero), resurtido de bolsas de todos los tamaños, rollos de impresora y TPV</td>
+                            <td class="p-2">Todo debe estar correctamente al aperturar la tienda</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Surtido de tubos y conexiones</td>
+                            <td class="p-2">Supervisar que al momento de apertura de tienda este completamente surtido todas las conexiones y tubos</td>
+                            <td class="p-2">No deben existir ceros o desnivelados al aperturar de tienda</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Formatos de cajas</td>
+                            <td class="p-2">Revisar al inicio de labores de cada una de las cajeras (8:00 y 11:00) los formatos de morralla que esten llenos adecuadamente (fecha, monto, firma de entrega y firma de recibido)</td>
+                            <td class="p-2">Asegurar el llenado de forma correcta</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Recorrido de ceros</td>
+                            <td class="p-2">Hacer el recorrido de ceros y G-50 inmediatamente despues de que sean acomodadas las canastillas que se dejaron del dia anterior identificando las categorias correspondientes: ALMACEN / PEDIDO / DESABASTO / NO CONTROLADO</td>
+                            <td class="p-2">No deben existir ceros en la categoria de Resurtido. (en caso de tener ceros en resurtido, analizar las causas y corregir para que sean surtidos por almacen)</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Recorrido LOPE</td>
+                            <td class="p-2">Realizar recorrido por pasillos, supervisando: limpieza de mercancia y muebles. Orden de producto, que este frenteado, careado y bien distribuido. No contar con etiquetas dañadas.</td>
+                            <td class="p-2">Corregir todas las areas de oportunidad apoyandose con el personal de piso</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Guía de exhibición de máquinas</td>
+                            <td class="p-2">Ejecutar la guía de exhibición de máquinas en piso de venta, corrigiendo las incidencias encontradas durante el recorrido y enviar la evidencia correspondiente al</td>
+                            <td class="p-2">Las incidencias encontradas se deben corregir una vez que se identifican.</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Cíclicos y nivelacion de ganchos</td>
+                            <td class="p-2">Supervisar a la persona de cíclicos que lleve al dia los inventarios ciclicos asi como el nivelado de ganchos de acuerdo al tiempo establecido</td>
+                            <td class="p-2">Garantizar confiabilidad de inventarios</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Separar los ceros y pedidos especiales</td>
+                            <td class="p-2">Al llegar la factura asegurar que sean separados los ceros y los pedidos especiales por parte del personal de almacen</td>
+                            <td class="p-2">Se deben colocar en gancho de inmediato los productos que se encuentren en cero.</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Planogramas</td>
+                            <td class="p-2">Actualizar planogramas en caso de que aplique. Revisar cierta cantidad de planogramas al dia (lo que la operación permita) y mandar evidencia</td>
+                            <td class="p-2">Se deben revisar todos los planogramas a lo largo de un mes apoyandose de</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Subgerencia</td>
+                            <td class="p-2 font-medium">Area de cajas</td>
+                            <td class="p-2">Realizar retiros de dinero a cajeros, cuando el sistema lo pida. Realizar devoluciones, refacturacion, pedidos especiales. Esto se debe hacer hasta que llegue el supervisor de cajas, llegando el supervisor el sera el responsable de estas actividades, subgerencia solo supervisara que se haga correctamente y apoyando cuando se requiera. (TRANSFERENCIAS SOLO PUEDEN SER REVISADAS POR GERENCIA Y SUBGERENCIA)</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionSubgerencia', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
+                    Descargar Checklist
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FORMATO 6: CHECKLIST GERENCIA ================= -->
+        <section id="sectionGerencia" class="bg-white rounded-lg shadow-md p-6 max-w-5xl mx-auto print-card hidden">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Checklist de Gerencia</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Gerencia</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Empresa / Sucursal</label>
+                    <input type="text" id="gerEmpresa" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Responsable / Gerente</label>
+                    <input type="text" id="gerResponsable" placeholder="Nombre del Gerente" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="gerFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="gerHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border border-gray-200 rounded-md">
+                    <thead>
+                        <tr class="bg-gray-800 text-white font-bold uppercase tracking-wider">
+                            <th class="p-2 w-24">ÁREA</th>
+                            <th class="p-2 w-32">ACTIVIDAD</th>
+                            <th class="p-2">OBJETIVO</th>
+                            <th class="p-2 w-48">KPI / INDICADOR</th>
+                            <th class="p-2 w-24 text-center">ESTADO</th>
+                            <th class="p-2 w-40">OBSERVACIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Revisar pendientes</td>
+                            <td class="p-2">Revisar con subgerencia los pendientes que se generen durante la mañana para dar seguimiento y darlas por concluido</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Recorrido por piso de ventas y almacen</td>
+                            <td class="p-2">Realizar recorrido en piso de ventas para temas de LOPE, y en el area de almacen para supervisar y dar seguimiento a temas de resurtido y acomodo de factura</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">POSPLUS</td>
+                            <td class="p-2">Alta de artículos nuevos</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">POSPLUS</td>
+                            <td class="p-2">Generar reporte de negativos y depurarlos tomando en cuenta los pedidos especiales</td>
+                            <td class="p-2">Mantener existencias sin negativos</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">POSPLUS</td>
+                            <td class="p-2">Generacion y seguimiento a ticket de mesa de servicio</td>
+                            <td class="p-2">Tener el sistema POSPLUS en optimo funcionamiento</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">POSPLUS</td>
+                            <td class="p-2">Generacion de pedido sugerido y esperar confirmacion para elaborar orden de compra y realizar pedido en truper en línea</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Atencion a cliente</td>
+                            <td class="p-2">Responsable de validar transferencias bancarias. (tambien lo puede hacer subgerencia)</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Atencion a cliente</td>
+                            <td class="p-2">Supervisar que se atienda el telefono y whatsapp</td>
+                            <td class="p-2">Evitar mala atencion o una atencion tardia</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Atencion a cliente</td>
+                            <td class="p-2">supervisar al area de piso de ventas y area de cajas que se realice la mejor atencion a cliente (amabilidad, rapidez y eficiente)</td>
+                            <td class="p-2">Evitar mala atencion o una atencion tardia</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Recorrido de ceros</td>
+                            <td class="p-2">Realizar recorrido de ceros y G-50 dos veces por dia, identificando según la categoría</td>
+                            <td class="p-2">No tener ceros con mas de 1 hora de no sacar de almacen, y analizar ceros que no tengan venta y no esten en piso de venta y descartar robos</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">sistema</td>
+                            <td class="p-2">Reportes de incidencias de cajero Smart Safe</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Devoluciones y garantías.</td>
+                            <td class="p-2">
+                                -Garantizar el correcto flujo a garantias en base al procedimiento autorizado.<br>
+                                -Validar la correcta aplicación en las devoluciones de producto.<br>
+                                -Garantizar que la documentación se encuentre completa una vez concluido el proceso hasta su entrega al área administrativa.
+                            </td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Lista de clientes con descuento</td>
+                            <td class="p-2">Generar reporte del dia con clientes que ya han cumplido con las compras de $4,000 en el mes, y compartir archivo a todos los puntos de venta</td>
+                            <td class="p-2">mantener menos del 60 % de ventas a precio de fabrica</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 font-semibold">Gerencia</td>
+                            <td class="p-2 font-medium">Reportes</td>
+                            <td class="p-2">Puntual envío de reportes:<br>-Cuadre de cajas.<br>-Reporte de operaciones.<br>-Formato de ventas.</td>
+                            <td class="p-2">N/A</td>
+                            <td class="p-2 text-center">
+                                <select class="w-full border rounded p-1 text-xs">
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
+                                    <option value="NA">N/A</option>
+                                </select>
+                            </td>
+                            <td class="p-1"><input type="text" class="w-full border rounded p-1 text-xs"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionGerencia', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
+                    Descargar Checklist
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FORMATO 7: CONTROL DE ACTIVIDADES ================= -->
+        <section id="sectionActividades" class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto print-card hidden">
+            <div class="flex justify-between items-start border-b pb-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
+                    <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Control de Actividades en Piso</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Actividades</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Empleado</label>
+                    <input type="text" id="actEmpleado" placeholder="Nombre de empleado" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Sucursal</label>
+                    <input type="text" id="actSucursal" value="FIX ZAC" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Área</label>
+                    <input type="text" id="actArea" placeholder="Área asignada" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Fecha</label>
+                    <input type="date" id="actFecha" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase">Hora</label>
+                    <input type="time" id="actHora" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 border text-xs">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border border-gray-300 rounded-md">
+                    <thead>
+                        <tr class="bg-gray-100 uppercase text-xs text-gray-800 border-b border-gray-300">
+                            <th class="p-3 text-left font-extrabold w-2/3">ACTIVIDADES</th>
+                            <th class="p-3 text-center bg-green-700 text-white font-bold w-1/9">T</th>
+                            <th class="p-3 text-center bg-yellow-400 text-gray-900 font-bold w-1/9">P</th>
+                            <th class="p-3 text-center bg-red-600 text-white font-bold w-1/9">R</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Limpieza de gondolas asignadas</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_1" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_1" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_1" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Frente correcto de producto</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_2" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_2" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_2" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Acomodo de desnivelado y ceros</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_3" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_3" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_3" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Blister y empaques en buen estado</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_4" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_4" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_4" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Acomodo de producto</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_5" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_5" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_5" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Etiquetado correcto (etiquetado en buen estado)</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_6" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_6" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_6" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-gray-700">Fichas tecnicas/Graficos/Accesorios de equipo</td>
+                            <td class="p-2 text-center"><input type="radio" name="act_7" value="T" class="w-4 h-4 text-green-600"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_7" value="P" class="w-4 h-4 text-yellow-500"></td>
+                            <td class="p-2 text-center"><input type="radio" name="act_7" value="R" class="w-4 h-4 text-red-600"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Leyenda de colores -->
+            <div class="mt-6 flex flex-col space-y-2 text-xs font-semibold text-gray-700 w-64 ml-auto">
+                <div class="flex items-center space-x-2">
+                    <span class="w-6 h-6 bg-green-700 rounded block"></span>
+                    <span>Actividad terminada</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-6 h-6 bg-yellow-400 rounded block"></span>
+                    <span>Actividad en proceso</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-6 h-6 bg-red-600 rounded block"></span>
+                    <span>Actividad con retraso</span>
+                </div>
+            </div>
+
+            <div class="mt-8 text-right no-print">
+                <button onclick="generar('sectionActividades', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Evaluación
                 </button>
             </div>
