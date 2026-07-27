@@ -168,9 +168,9 @@ async function generar(a, botonReferencia) {
         spanTemporal.style.fontFamily = estiloOriginal.fontFamily;
         spanTemporal.style.fontSize = estiloOriginal.fontSize;
         spanTemporal.style.color = estiloOriginal.color;
-        spanTemporal.style.border = estiloOriginal.border;
-        spanTemporal.style.borderRadius = estiloOriginal.borderRadius;
-        spanTemporal.style.backgroundColor = estiloOriginal.backgroundColor;
+        spanTemporal.style.border = 'none';
+        spanTemporal.style.borderRadius = 'none';
+        spanTemporal.style.backgroundColor = 'none';
         
         spanTemporal.style.display = 'inline-flex';
         spanTemporal.style.alignItems = 'center';
