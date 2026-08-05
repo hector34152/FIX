@@ -1,3 +1,26 @@
+function expandirTabla(texto, idTabla,idTitulo,idBotonRegresar) {
+    const tabla = document.getElementById(idTabla);
+    const titulo = document.getElementById(idTitulo);
+    const botonRegresar = document.getElementById(idBotonRegresar);
+
+    tabla.classList.add('hidden');
+    titulo.classList.remove('hidden');
+    titulo.textContent = texto;
+    botonRegresar.classList.remove('hidden');
+}
+
+function regresarTabla(idBoton, idTabla, idTitulo, idBotonRegresar,divFoto) {
+    const tabla = document.getElementById(idTabla);
+    const titulo = document.getElementById(idTitulo);
+    const botonRegresar = document.getElementById(idBotonRegresar);
+    const divFotos = document.getElementById(divFoto);
+
+    tabla.classList.remove('hidden');
+    titulo.classList.add('hidden');
+    botonRegresar.classList.add('hidden');
+    divFotos.innerHTML = '';
+}
+
 // ==========================================
 // FUNCIONES AUXILIARES DE FORMATEO
 // ==========================================
@@ -79,9 +102,9 @@ async function generar(a, botonReferencia) {
         divTemporal.style.lineHeight = estiloOriginal.lineHeight; 
         divTemporal.style.color = estiloOriginal.color;
         divTemporal.style.padding = '0.25rem';
-    //    divTemporal.style.border = estiloOriginal.border;
-//        divTemporal.style.borderRadius = estiloOriginal.borderRadius;
-  //      divTemporal.style.backgroundColor = estiloOriginal.backgroundColor;
+        divTemporal.style.border = estiloOriginal.border;
+        divTemporal.style.borderRadius = estiloOriginal.borderRadius;
+        divTemporal.style.backgroundColor = estiloOriginal.backgroundColor;
         
         const dimTextarea = textarea.getBoundingClientRect();
         divTemporal.style.width = dimTextarea.width + 'px';
@@ -111,9 +134,9 @@ async function generar(a, botonReferencia) {
         contenedorFalso.style.boxSizing = 'border-box';
         contenedorFalso.style.display = 'inline-block';
         contenedorFalso.style.position = 'relative';
-        contenedorFalso.style.border = 'none';
-        contenedorFalso.style.borderRadius = 'none';
-        contenedorFalso.style.backgroundColor = 'none';
+        contenedorFalso.style.border = estiloOriginal.border;
+        contenedorFalso.style.borderRadius = estiloOriginal.borderRadius;
+        contenedorFalso.style.backgroundColor = estiloOriginal.backgroundColor;
         contenedorFalso.style.marginTop = '0';
         contenedorFalso.style.marginBottom = 'auto';
         contenedorFalso.style.marginLeft = 'auto';
@@ -168,9 +191,9 @@ async function generar(a, botonReferencia) {
         spanTemporal.style.fontFamily = estiloOriginal.fontFamily;
         spanTemporal.style.fontSize = estiloOriginal.fontSize;
         spanTemporal.style.color = estiloOriginal.color;
-        spanTemporal.style.border = 'none';
-        spanTemporal.style.borderRadius = 'none';
-        spanTemporal.style.backgroundColor = 'none';
+        spanTemporal.style.border = estiloOriginal.border;
+        spanTemporal.style.borderRadius = estiloOriginal.borderRadius;
+        spanTemporal.style.backgroundColor = estiloOriginal.backgroundColor;
         
         spanTemporal.style.display = 'inline-flex';
         spanTemporal.style.alignItems = 'center';
