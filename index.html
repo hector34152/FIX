@@ -654,7 +654,7 @@
             </div>
             <div class="mt-8 border-t pt-6">
                 <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
-                <div class=" mb-4">
+                <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosCajas')">
@@ -670,12 +670,13 @@
             </div>
         </section>
 
-        <!-- ================= FORMATO 5: CHECKLIST SUBGERENCIA ================= -->
-        <section id="sectionSubgerencia" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card hidden">
+            <!-- ================= FORMATO 5: CHECKLIST SUBGERENCIA ================= -->
+        <section id="sectionSubgerencia" class="bg-white rounded-lg shadow-md p-6 w-[28cm] mx-auto print-card ">
             <div class="flex justify-between items-start border-b pb-4 mb-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
                     <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Checklist de Subgerencia</p>
+                    <p id="subTitleSubgerente" class="text-xs text-red-500 uppercase font-bold tracking-wider mt-1 hidden">Lolito</p>
                 </div>
                 <div class="text-right">
                     <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Subgerencia</span>
@@ -702,7 +703,7 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-xs text-left border border-gray-200 rounded-md">
+                <table id="subgerenciaForm" class="w-full text-xs text-left border border-gray-200 rounded-md">
                     <thead>
                         <tr class="bg-gray-800 text-white font-bold uppercase tracking-wider">
                             <th class="p-2 w-24">ÁREA</th>
@@ -716,7 +717,7 @@
                     <tbody class="divide-y divide-gray-200">
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Area de cajas</td>
+                            <td class="p-2 font-medium"> <button onclick="expandirTabla('Area de cajas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Area de cajas</button> </td>
                             <td class="p-2">Verificar que todos los puntos de venta funcionen correctamente (Equipos de computo, terminales bancarias y caja de dinero), resurtido de bolsas de todos los tamaños, rollos de impresora y TPV</td>
                             <td class="p-2">Todo debe estar correctamente al aperturar la tienda</td>
                             <td class="p-2 text-center">
@@ -730,7 +731,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Surtido de tubos y conexiones</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Surtido de tubos y conexiones','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Surtido de tubos y conexiones</button></td>
                             <td class="p-2">Supervisar que al momento de apertura de tienda este completamente surtido todas las conexiones y tubos</td>
                             <td class="p-2">No deben existir ceros o desnivelados al aperturar de tienda</td>
                             <td class="p-2 text-center">
@@ -744,7 +745,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Formatos de cajas</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Formatos de cajas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Formatos de cajas</button></td>
                             <td class="p-2">Revisar al inicio de labores de cada una de las cajeras (8:00 y 11:00) los formatos de morralla que esten llenos adecuadamente (fecha, monto, firma de entrega y firma de recibido)</td>
                             <td class="p-2">Asegurar el llenado de forma correcta</td>
                             <td class="p-2 text-center">
@@ -758,7 +759,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Recorrido de ceros</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Recorrido de ceros','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Recorrido de ceros</button></td>
                             <td class="p-2">Hacer el recorrido de ceros y G-50 inmediatamente despues de que sean acomodadas las canastillas que se dejaron del dia anterior identificando las categorias correspondientes: ALMACEN / PEDIDO / DESABASTO / NO CONTROLADO</td>
                             <td class="p-2">No deben existir ceros en la categoria de Resurtido. (en caso de tener ceros en resurtido, analizar las causas y corregir para que sean surtidos por almacen)</td>
                             <td class="p-2 text-center">
@@ -772,7 +773,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Recorrido LOPE</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Recorrido LOPE','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Recorrido LOPE</button></td>
                             <td class="p-2">Realizar recorrido por pasillos, supervisando: limpieza de mercancia y muebles. Orden de producto, que este frenteado, careado y bien distribuido. No contar con etiquetas dañadas.</td>
                             <td class="p-2">Corregir todas las areas de oportunidad apoyandose con el personal de piso</td>
                             <td class="p-2 text-center">
@@ -786,7 +787,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Guía de exhibición de máquinas</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Guía de exhibición de máquinas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Guía de exhibición de máquinas</button></td>
                             <td class="p-2">Ejecutar la guía de exhibición de máquinas en piso de venta, corrigiendo las incidencias encontradas durante el recorrido y enviar la evidencia correspondiente al</td>
                             <td class="p-2">Las incidencias encontradas se deben corregir una vez que se identifican.</td>
                             <td class="p-2 text-center">
@@ -800,7 +801,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Cíclicos y nivelacion de ganchos</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Cíclicos y nivelacion de ganchos','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Cíclicos y nivelacion de ganchos</button></td>
                             <td class="p-2">Supervisar a la persona de cíclicos que lleve al dia los inventarios ciclicos asi como el nivelado de ganchos de acuerdo al tiempo establecido</td>
                             <td class="p-2">Garantizar confiabilidad de inventarios</td>
                             <td class="p-2 text-center">
@@ -814,7 +815,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Separar los ceros y pedidos especiales</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Separar los ceros y pedidos especiales','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Separar los ceros y pedidos especiales</button></td>
                             <td class="p-2">Al llegar la factura asegurar que sean separados los ceros y los pedidos especiales por parte del personal de almacen</td>
                             <td class="p-2">Se deben colocar en gancho de inmediato los productos que se encuentren en cero.</td>
                             <td class="p-2 text-center">
@@ -828,7 +829,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Planogramas</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Planogramas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Planogramas</button></td>
                             <td class="p-2">Actualizar planogramas en caso de que aplique. Revisar cierta cantidad de planogramas al dia (lo que la operación permita) y mandar evidencia</td>
                             <td class="p-2">Se deben revisar todos los planogramas a lo largo de un mes apoyandose de</td>
                             <td class="p-2 text-center">
@@ -842,7 +843,7 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium">Area de cajas</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Area de cajas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Area de cajas</button></td>
                             <td class="p-2">Realizar retiros de dinero a cajeros, cuando el sistema lo pida. Realizar devoluciones, refacturacion, pedidos especiales. Esto se debe hacer hasta que llegue el supervisor de cajas, llegando el supervisor el sera el responsable de estas actividades, subgerencia solo supervisara que se haga correctamente y apoyando cuando se requiera. (TRANSFERENCIAS SOLO PUEDEN SER REVISADAS POR GERENCIA Y SUBGERENCIA)</td>
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
@@ -859,10 +860,14 @@
             </div>
             <div class="mt-8 border-t pt-6">
                 <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
-                <div class=" mb-4">
+                <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosSubgerencia')">
+                    </label>
+                    <label id="regresarTablaSubgerencia" class="no-print bg-red-600 hover:bg-red-700 text-white font-bold w-12 h-6 flex items-center justify-center text-sm shadow">
+                        back
+                        <input type="button" value="Regresar" capture="environment" class="hidden" onclick="regresarTabla('regresarTablaSubgerencia','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia','contenedorFotosSubgerencia')">
                     </label>
                 </div>
                 <div id="contenedorFotosSubgerencia" class="grid grid-cols-3 gap-4"></div>
@@ -871,7 +876,7 @@
                 <button onclick="generar('sectionSubgerencia', this)" class="bg-gray-800 hover:bg-gray-950 text-white font-bold py-2 px-6 rounded shadow transition">
                     Descargar Checklist
                 </button>
-            </div>
+                </div>
         </section>
 
         <!-- ================= FORMATO 6: CHECKLIST GERENCIA ================= -->
@@ -967,8 +972,8 @@
                             <td class="p-2">Mantener existencias sin negativos</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
-                                    <option value="CUMPLE">Cumple</option>
-                                    <option value="NO CUMPLE">No cumple</option>
+                                    <option value="CUMPLE">✓ Cumple</option>
+                                    <option value="NO CUMPLE">✗ No cumple</option>
                                     <option value="NA">N/A</option>
                                 </select>
                             </td>
@@ -1123,7 +1128,7 @@
             </div>
             <div class="mt-8 border-t pt-6">
                 <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
-                <div class=" mb-4">
+                <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosGerencia')">
@@ -1253,7 +1258,7 @@
             </div>
             <div class="mt-8 border-t pt-6">
                 <h3 class="text-xs font-bold uppercase text-gray-700 tracking-wider mb-3">Evidencia Fotográfica</h3>
-                <div class="mb-4">
+                <div class="no-print mb-4">
                     <label class="cursor-pointer bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded text-sm inline-flex items-center shadow transition">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         <input type="file" accept="image/*" capture="environment" class="hidden" onchange="previsualizarImagen(this, 'contenedorFotosactividades')">
