@@ -676,7 +676,8 @@
                 <div>
                     <h2 class="text-2xl font-black tracking-wider text-orange-600">FIX <span class="text-gray-700 text-lg font-normal">FERRETERÍAS</span></h2>
                     <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1">Checklist de Subgerencia</p>
-                    <p id="subTitleSubgerente" class="text-xs text-red-500 uppercase font-bold tracking-wider mt-1 hidden">Lolito</p>
+                    <p id="subTitleSubgerente" class="text-xs text-orange-500 uppercase font-bold tracking-wider mt-1 hidden"></p>
+                    <p id="desTitleSubgerente" class="text-xs text-gray-500 uppercase font-bold tracking-wider mt-1 hidden"></p>
                 </div>
                 <div class="text-right">
                     <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase no-print">Subgerencia</span>
@@ -717,8 +718,8 @@
                     <tbody class="divide-y divide-gray-200">
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"> <button onclick="expandirTabla('Area de cajas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Area de cajas</button> </td>
-                            <td class="p-2">Verificar que todos los puntos de venta funcionen correctamente (Equipos de computo, terminales bancarias y caja de dinero), resurtido de bolsas de todos los tamaños, rollos de impresora y TPV</td>
+                            <td class="p-2 font-medium"> <button onclick="expandirTabla('Area de cajas','desTitleSubgerente','desSubgerente01','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Area de cajas</button> </td>
+                            <td id ="desSubgerente01" class="p-2">Verificar que todos los puntos de venta funcionen correctamente (Equipos de computo, terminales bancarias y caja de dinero), resurtido de bolsas de todos los tamaños, rollos de impresora y TPV</td>
                             <td class="p-2">Todo debe estar correctamente al aperturar la tienda</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -731,8 +732,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Surtido de tubos y conexiones','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Surtido de tubos y conexiones</button></td>
-                            <td class="p-2">Supervisar que al momento de apertura de tienda este completamente surtido todas las conexiones y tubos</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Surtido de tubos y conexiones','desTitleSubgerente','desSubgerente02','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Surtido de tubos y conexiones</button></td>
+                            <td id ="desSubgerente02" class="p-2">Supervisar que al momento de apertura de tienda este completamente surtido todas las conexiones y tubos</td>
                             <td class="p-2">No deben existir ceros o desnivelados al aperturar de tienda</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -745,8 +746,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Formatos de cajas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Formatos de cajas</button></td>
-                            <td class="p-2">Revisar al inicio de labores de cada una de las cajeras (8:00 y 11:00) los formatos de morralla que esten llenos adecuadamente (fecha, monto, firma de entrega y firma de recibido)</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Formatos de cajas','desTitleSubgerente','desSubgerente03','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Formatos de cajas</button></td>
+                            <td id ="desSubgerente03" class="p-2">Revisar al inicio de labores de cada una de las cajeras (8:00 y 11:00) los formatos de morralla que esten llenos adecuadamente (fecha, monto, firma de entrega y firma de recibido)</td>
                             <td class="p-2">Asegurar el llenado de forma correcta</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -759,8 +760,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Recorrido de ceros','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Recorrido de ceros</button></td>
-                            <td class="p-2">Hacer el recorrido de ceros y G-50 inmediatamente despues de que sean acomodadas las canastillas que se dejaron del dia anterior identificando las categorias correspondientes: ALMACEN / PEDIDO / DESABASTO / NO CONTROLADO</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Recorrido de ceros','desTitleSubgerente','desSubgerente04','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Recorrido de ceros</button></td>
+                            <td  id ="desSubgerente04" class="p-2">Hacer el recorrido de ceros y G-50 inmediatamente despues de que sean acomodadas las canastillas que se dejaron del dia anterior identificando las categorias correspondientes: ALMACEN / PEDIDO / DESABASTO / NO CONTROLADO</td>
                             <td class="p-2">No deben existir ceros en la categoria de Resurtido. (en caso de tener ceros en resurtido, analizar las causas y corregir para que sean surtidos por almacen)</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -773,8 +774,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Recorrido LOPE','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Recorrido LOPE</button></td>
-                            <td class="p-2">Realizar recorrido por pasillos, supervisando: limpieza de mercancia y muebles. Orden de producto, que este frenteado, careado y bien distribuido. No contar con etiquetas dañadas.</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Recorrido LOPE','desTitleSubgerente','desSubgerente05','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Recorrido LOPE</button></td>
+                            <td id ="desSubgerente05" class="p-2">Realizar recorrido por pasillos, supervisando: limpieza de mercancia y muebles. Orden de producto, que este frenteado, careado y bien distribuido. No contar con etiquetas dañadas.</td>
                             <td class="p-2">Corregir todas las areas de oportunidad apoyandose con el personal de piso</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -787,8 +788,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Guía de exhibición de máquinas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Guía de exhibición de máquinas</button></td>
-                            <td class="p-2">Ejecutar la guía de exhibición de máquinas en piso de venta, corrigiendo las incidencias encontradas durante el recorrido y enviar la evidencia correspondiente al</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Guía de exhibición de máquinas','desTitleSubgerente','desSubgerente06','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Guía de exhibición de máquinas</button></td>
+                            <td id ="desSubgerente06" class="p-2">Ejecutar la guía de exhibición de máquinas en piso de venta, corrigiendo las incidencias encontradas durante el recorrido y enviar la evidencia correspondiente al</td>
                             <td class="p-2">Las incidencias encontradas se deben corregir una vez que se identifican.</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -801,8 +802,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Cíclicos y nivelacion de ganchos','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Cíclicos y nivelacion de ganchos</button></td>
-                            <td class="p-2">Supervisar a la persona de cíclicos que lleve al dia los inventarios ciclicos asi como el nivelado de ganchos de acuerdo al tiempo establecido</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Cíclicos y nivelacion de ganchos','desTitleSubgerente','desSubgerente07','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Cíclicos y nivelacion de ganchos</button></td>
+                            <td id ="desSubgerente07" class="p-2">Supervisar a la persona de cíclicos que lleve al dia los inventarios ciclicos asi como el nivelado de ganchos de acuerdo al tiempo establecido</td>
                             <td class="p-2">Garantizar confiabilidad de inventarios</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -815,8 +816,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Separar los ceros y pedidos especiales','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Separar los ceros y pedidos especiales</button></td>
-                            <td class="p-2">Al llegar la factura asegurar que sean separados los ceros y los pedidos especiales por parte del personal de almacen</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Separar los ceros y pedidos especiales','desTitleSubgerente','desSubgerente08','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Separar los ceros y pedidos especiales</button></td>
+                            <td id ="desSubgerente08" class="p-2">Al llegar la factura asegurar que sean separados los ceros y los pedidos especiales por parte del personal de almacen</td>
                             <td class="p-2">Se deben colocar en gancho de inmediato los productos que se encuentren en cero.</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -829,8 +830,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Planogramas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Planogramas</button></td>
-                            <td class="p-2">Actualizar planogramas en caso de que aplique. Revisar cierta cantidad de planogramas al dia (lo que la operación permita) y mandar evidencia</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Planogramas','desTitleSubgerente','desSubgerente09','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Planogramas</button></td>
+                            <td id ="desSubgerente09" class="p-2">Actualizar planogramas en caso de que aplique. Revisar cierta cantidad de planogramas al dia (lo que la operación permita) y mandar evidencia</td>
                             <td class="p-2">Se deben revisar todos los planogramas a lo largo de un mes apoyandose de</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
@@ -843,8 +844,8 @@
                         </tr>
                         <tr>
                             <td class="p-2 font-semibold">Subgerencia</td>
-                            <td class="p-2 font-medium"><button onclick="expandirTabla('Area de cajas','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Area de cajas</button></td>
-                            <td class="p-2">Realizar retiros de dinero a cajeros, cuando el sistema lo pida. Realizar devoluciones, refacturacion, pedidos especiales. Esto se debe hacer hasta que llegue el supervisor de cajas, llegando el supervisor el sera el responsable de estas actividades, subgerencia solo supervisara que se haga correctamente y apoyando cuando se requiera. (TRANSFERENCIAS SOLO PUEDEN SER REVISADAS POR GERENCIA Y SUBGERENCIA)</td>
+                            <td class="p-2 font-medium"><button onclick="expandirTabla('Area de cajas','desTitleSubgerente','desSubgerente10','subgerenciaForm','subTitleSubgerente','regresarTablaSubgerencia')" class="text-blue-500 hover:text-blue-700 text-start">Area de cajas</button></td>
+                            <td id ="desSubgerente10" class="p-2">Realizar retiros de dinero a cajeros, cuando el sistema lo pida. Realizar devoluciones, refacturacion, pedidos especiales. Esto se debe hacer hasta que llegue el supervisor de cajas, llegando el supervisor el sera el responsable de estas actividades, subgerencia solo supervisara que se haga correctamente y apoyando cuando se requiera. (TRANSFERENCIAS SOLO PUEDEN SER REVISADAS POR GERENCIA Y SUBGERENCIA)</td>
                             <td class="p-2">N/A</td>
                             <td class="p-2 text-center">
                                 <select class="w-full border rounded p-1 text-xs">
