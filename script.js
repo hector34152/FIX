@@ -1,17 +1,21 @@
-function expandirTabla(texto, idTabla,idTitulo,idBotonRegresar) {
+function expandirTabla(textoT,idDes, textoD, idTabla,idTitulo,idBotonRegresar) {
     const tabla = document.getElementById(idTabla);
     const titulo = document.getElementById(idTitulo);
+    const Descripcion = document.getElementById(idDes);
     const botonRegresar = document.getElementById(idBotonRegresar);
 
     tabla.classList.add('hidden');
     titulo.classList.remove('hidden');
-    titulo.textContent = texto;
+    Descripcion.classList.remove('hidden');
+    titulo.textContent = textoT;
+    Descripcion.textContent = TextoD.textContent;
     botonRegresar.classList.remove('hidden');
 }
 
-function regresarTabla(idBoton, idTabla, idTitulo, idBotonRegresar,divFoto) {
+function regresarTabla(idBoton, idTabla, idTitulo, idDes,idBotonRegresar,divFoto) {
     const tabla = document.getElementById(idTabla);
     const titulo = document.getElementById(idTitulo);
+    const descripcion = document.getElementById(idDes);
     const botonRegresar = document.getElementById(idBotonRegresar);
     const divFotos = document.getElementById(divFoto);
 
