@@ -1,37 +1,108 @@
-function expandirTabla(textoT,idDes, textoD, idTabla,idTitulo,idBotonRegresar) {
-    const tabla = document.getElementById(idTabla);
-    const titulo = document.getElementById(idTitulo);
-    const Descripcion = document.getElementById(idDes);
-    const botonRegresar = document.getElementById(idBotonRegresar);
+// ==========================================
+// MANTENIMIENTO Y CONTROL DE PESTAÑAS (TOUCH FRIENDLY)
+// ==========================================
 
-    tabla.classList.add('hidden');
-    titulo.classList.remove('hidden');
-    Descripcion.classList.remove('hidden');
-    titulo.textContent = textoT;
-    Descripcion.textContent = TextoD.textContent;
-    botonRegresar.classList.remove('hidden');
+function toggleDropdown(dropId) {
+    const drops = document.querySelectorAll('.nav-dropdown');
+    drops.forEach(d => {
+        if (d.id === dropId) {
+            d.classList.toggle('hidden');
+        } else {
+            d.classList.add('hidden');
+        }
+    });
 }
 
-function regresarTabla(idBoton, idTabla, idTitulo, idDes,idBotonRegresar,divFoto) {
+function selectTab(tabName) {
+    switchTab(tabName);
+    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.add('hidden'));
+}
+
+function switchTab(tab) {
+    const secciones = [
+        'sectionArqueo', 
+        'sectionRecepcion', 
+        'sectionLOPE', 
+        'sectionCajas', 
+        'sectionSubgerencia', 
+        'sectionGerencia', 
+        'sectionActividades'
+    ];
+
+    secciones.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) sec.classList.add('hidden');
+    });
+
+    const mapaSecciones = {
+        'arqueo': 'sectionArqueo',
+        'recepcion': 'sectionRecepcion',
+        'LOPE': 'sectionLOPE',
+        'cajas': 'sectionCajas',
+        'subgerencia': 'sectionSubgerencia',
+        'gerencia': 'sectionGerencia',
+        'actividades': 'sectionActividades'
+    };
+
+    const objetivo = mapaSecciones[tab];
+    if (objetivo) {
+        const el = document.getElementById(objetivo);
+        if (el) el.classList.remove('hidden');
+    }
+
+    // Recalcular dimensiones de canvases de firma en vistas recién visibles
+    setTimeout(resizeCanvases, 50);
+}
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.group')) {
+        document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.add('hidden'));
+    }
+});
+
+// ==========================================
+// FUNCIONES EXPANDIR Y REGRESAR TABLA
+// ==========================================
+
+function expandirTabla(textoT, idDes, textoD, idTabla, idTitulo, idBotonRegresar) {
     const tabla = document.getElementById(idTabla);
     const titulo = document.getElementById(idTitulo);
     const descripcion = document.getElementById(idDes);
     const botonRegresar = document.getElementById(idBotonRegresar);
+    const textoDescripcion = document.getElementById(textoD);
+
+    if (tabla) tabla.classList.add('hidden');
+    if (titulo) {
+        titulo.classList.remove('hidden');
+        titulo.textContent = textoT;
+    }
+    if (descripcion) {
+        descripcion.classList.remove('hidden');
+        if (textoDescripcion) descripcion.textContent = textoDescripcion.textContent;
+    }
+    if (botonRegresar) botonRegresar.classList.remove('hidden');
+}
+
+function regresarTabla(idBoton, idTabla, idTitulo, idDes, idBotonRegresar, divFoto, idDesTitulo) {
+    const tabla = document.getElementById(idTabla);
+    const titulo = document.getElementById(idTitulo);
+    const tituloD = document.getElementById(idDesTitulo);
+    const descripcion = document.getElementById(idDes);
+    const botonRegresar = document.getElementById(idBotonRegresar);
     const divFotos = document.getElementById(divFoto);
 
-    tabla.classList.remove('hidden');
-    titulo.classList.add('hidden');
-    botonRegresar.classList.add('hidden');
-    divFotos.innerHTML = '';
+    if (tabla) tabla.classList.remove('hidden');
+    if (titulo) titulo.classList.add('hidden');
+    if (tituloD) tituloD.classList.add('hidden');
+    if (descripcion) descripcion.classList.add('hidden');
+    if (botonRegresar) botonRegresar.classList.add('hidden');
+    if (divFotos) divFotos.innerHTML = '';
 }
 
 // ==========================================
 // FUNCIONES AUXILIARES DE FORMATEO
 // ==========================================
 
-/**
- * Convierte 'AAAA-MM-DD' a 'DD/MM/AAAA'
- */
 function formatearFecha(fechaStr) {
     if (!fechaStr || fechaStr.trim() === '') return '';
     if (fechaStr instanceof Date) {
@@ -43,9 +114,6 @@ function formatearFecha(fechaStr) {
     return `${day}/${month}/${year}`;
 }
 
-/**
- * Convierte 'HH:MM' (24 hrs) a 'HH:MM AM/PM' (12 hrs)
- */
 function formatearHora(horaStr) {
     if (!horaStr || horaStr.trim() === '') return '';
     const partes = horaStr.split(':');
@@ -56,7 +124,7 @@ function formatearHora(horaStr) {
     
     const ampm = horas >= 12 ? 'PM' : 'AM';
     horas = horas % 12;
-    horas = horas ? horas : 12; // La hora 00 corresponde a las 12 AM
+    horas = horas ? horas : 12;
     
     const horasFormateadas = String(horas).padStart(2, '0');
     return `${horasFormateadas}:${minutos} ${ampm}`;
@@ -78,10 +146,10 @@ async function generar(a, botonReferencia) {
     if (botonReferencia) botonReferencia.style.display = 'none';
     const reemplazos = [];
 
-    // 0. PROCESAR label
+    // 0. PROCESAR LABELS
     const labels = elemento.querySelectorAll('label');
     labels.forEach(label => {
-        label.style.marginBottom = '1rem';
+        label.style.marginBottom = '0.5rem';
     });
 
     // 1. PROCESAR TEXTAREAS
@@ -138,9 +206,9 @@ async function generar(a, botonReferencia) {
         contenedorFalso.style.boxSizing = 'border-box';
         contenedorFalso.style.display = 'inline-block';
         contenedorFalso.style.position = 'relative';
-        contenedorFalso.style.border = estiloOriginal.border;
-        contenedorFalso.style.borderRadius = estiloOriginal.borderRadius;
-        contenedorFalso.style.backgroundColor = estiloOriginal.backgroundColor;
+        contenedorFalso.style.border = 'none';
+        contenedorFalso.style.borderRadius = 'none';
+        contenedorFalso.style.backgroundColor = 'none';
         contenedorFalso.style.marginTop = '0';
         contenedorFalso.style.marginBottom = 'auto';
         contenedorFalso.style.marginLeft = 'auto';
@@ -220,7 +288,6 @@ async function generar(a, botonReferencia) {
         let valorRaw = elementoFecha.value || "";
         let textoFechaHora = " ";
 
-        // Formateo según el tipo de input
         if (elementoFecha.type === 'date') {
             textoFechaHora = formatearFecha(valorRaw);
         } else if (elementoFecha.type === 'time') {
@@ -256,7 +323,7 @@ async function generar(a, botonReferencia) {
     // 4. GENERAR EL CANVAS
     try {
         const canvas = await html2canvas(elemento, {
-            scale: 4,           
+            scale: 5,           
             useCORS: true,      
             logging: false,     
             backgroundColor: '#ffffff',
@@ -287,31 +354,177 @@ async function generar(a, botonReferencia) {
 }
 
 // ==========================================
-// TABLAS, CÁLCULOS Y FUNCIONALIDADES DE PÁGINA
+// DENOMINACIONES, CÁLCULOS Y CANVAS
 // ==========================================
 
-// Denominaciones (MXN)
 const denBilletes = [1000, 500, 200, 100, 50, 20];
 const denMonedas = [10, 5, 2, 1, 0.5];
+const padMap = {};
 
-// Inicializar Fechas actuales
-['arqFecha', 'recFecha', 'lopeFecha', 'cajasFecha', 'subFecha', 'gerFecha', 'actFecha'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.valueAsDate = new Date();
-});
+function resizeCanvases() {
+    Object.keys(padMap).forEach(key => {
+        const canvas = document.getElementById(`canvasFirma${key}`);
+        if (canvas) {
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            const data = padMap[key].toData();
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+            padMap[key].fromData(data);
+        }
+    });
+}
 
-// Colocar hora actual
-const ahora = new Date();
-const horaStr = String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
-['arqHora', 'recHora', 'lopeHora', 'subHora', 'gerHora', 'actHora'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = horaStr;
-});
+window.addEventListener("resize", resizeCanvases);
 
-// Generar dinámicamente tablas de arqueo y recepción
+function inicializarFirmas() {
+    ['ArqResp', 'ArqSup', 'RecEnt', 'RecRec'].forEach(key => {
+        const canvas = document.getElementById(`canvasFirma${key}`);
+        if (canvas) {
+            padMap[key] = new SignaturePad(canvas, {
+                backgroundColor: 'rgba(255, 255, 255, 0)',
+                penColor: 'rgb(0, 0, 0)'
+            });
+        }
+    });
+    resizeCanvases();
+}
+
+function clearSignature(key) {
+    if (padMap[key]) {
+        padMap[key].clear();
+    }
+}
+
+function previsualizarImagen(input, idContenedor) {
+    const contenedor = document.getElementById(idContenedor);
+    if (!contenedor) return;
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const div = document.createElement('div');
+            div.className = 'relative group border rounded p-1 bg-gray-50';
+            div.innerHTML = `
+                <img src="${e.target.result}" class="w-full h-32 object-cover rounded">
+                <button type="button" onclick="this.parentElement.remove()" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs no-print hover:bg-red-700">
+                    ✕
+                </button>
+            `;
+            contenedor.appendChild(div);
+            input.value = '';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function calcularArqueo() {
+    let totalBilletes = 0;
+    denBilletes.forEach(d => {
+        const cant = parseFloat(document.getElementById(`cantArqB_${d}`)?.value || 0);
+        const sub = cant * d;
+        totalBilletes += sub;
+        const lbl = document.getElementById(`totArqB_${d}`);
+        if (lbl) lbl.innerText = `$${sub.toFixed(2)}`;
+    });
+
+    let totalMonedas = 0;
+    denMonedas.forEach(d => {
+        const cant = parseFloat(document.getElementById(`cantArqM_${d}`)?.value || 0);
+        const sub = cant * d;
+        totalMonedas += sub;
+        const lbl = document.getElementById(`totArqM_${d}`);
+        if (lbl) lbl.innerText = `$${sub.toFixed(2)}`;
+    });
+
+    const totBilletesLbl = document.getElementById('totalBilletesArqueo');
+    if (totBilletesLbl) totBilletesLbl.innerText = `$${totalBilletes.toFixed(2)}`;
+
+    const totMonedasLbl = document.getElementById('totalMonedasArqueo');
+    if (totMonedasLbl) totMonedasLbl.innerText = `$${totalMonedas.toFixed(2)}`;
+
+    const totalEfectivo = totalBilletes + totalMonedas;
+    const fondo = parseFloat(document.getElementById('arqFondoCaja')?.value || 0);
+    const declarar = totalEfectivo - fondo;
+    const sistema = parseFloat(document.getElementById('arqSistema')?.value || 0);
+    const diferencia = declarar - sistema;
+
+    const lblEfectivo = document.getElementById('lblTotalEfectivoArqueo');
+    if (lblEfectivo) lblEfectivo.innerText = `$${totalEfectivo.toFixed(2)}`;
+
+    const lblDeclarar = document.getElementById('lblTotalDeclararArqueo');
+    if (lblDeclarar) lblDeclarar.innerText = `$${declarar.toFixed(2)}`;
+
+    const lblDif = document.getElementById('lblDiferenciaArqueo');
+    if (lblDif) {
+        lblDif.innerText = `$${diferencia.toFixed(2)}`;
+        const divDif = document.getElementById('divDiferenciaArqueo');
+        if (divDif) {
+            if (diferencia < 0) {
+                divDif.className = "flex justify-between items-center p-2 rounded font-bold bg-red-100 text-red-700";
+            } else if (diferencia > 0) {
+                divDif.className = "flex justify-between items-center p-2 rounded font-bold bg-green-100 text-green-700";
+            } else {
+                divDif.className = "flex justify-between items-center p-2 rounded font-bold bg-gray-100 text-gray-800";
+            }
+        }
+    }
+}
+
+function calcularRecepcion() {
+    let totalBilletes = 0;
+    denBilletes.forEach(d => {
+        const cant = parseFloat(document.getElementById(`cantRecB_${d}`)?.value || 0);
+        const sub = cant * d;
+        totalBilletes += sub;
+        const lbl = document.getElementById(`totRecB_${d}`);
+        if (lbl) lbl.innerText = `$${sub.toFixed(2)}`;
+    });
+
+    let totalMonedas = 0;
+    denMonedas.forEach(d => {
+        const cant = parseFloat(document.getElementById(`cantRecM_${d}`)?.value || 0);
+        const sub = cant * d;
+        totalMonedas += sub;
+        const lbl = document.getElementById(`totRecM_${d}`);
+        if (lbl) lbl.innerText = `$${sub.toFixed(2)}`;
+    });
+
+    const totBilletesLbl = document.getElementById('totalBilletesRec');
+    if (totBilletesLbl) totBilletesLbl.innerText = `$${totalBilletes.toFixed(2)}`;
+
+    const totMonedasLbl = document.getElementById('totalMonedasRec');
+    if (totMonedasLbl) totMonedasLbl.innerText = `$${totalMonedas.toFixed(2)}`;
+
+    const totalEfectivo = totalBilletes + totalMonedas;
+    const montoFijo = parseFloat(document.getElementById('recMontoFijo')?.value || 0);
+    const diferencia = totalEfectivo - montoFijo;
+
+    const lblMontoEst = document.getElementById('lblMontoEstRec');
+    if (lblMontoEst) lblMontoEst.innerText = `$${montoFijo.toFixed(2)}`;
+
+    const lblEfectivo = document.getElementById('lblTotalEfectivoRec');
+    if (lblEfectivo) lblEfectivo.innerText = `$${totalEfectivo.toFixed(2)}`;
+
+    const lblDif = document.getElementById('lblDiferenciaRec');
+    if (lblDif) {
+        lblDif.innerText = `$${diferencia.toFixed(2)}`;
+        const divDif = document.getElementById('divDiferenciaRec');
+        if (divDif) {
+            if (diferencia < 0) {
+                divDif.className = "w-full flex justify-between items-center p-3 rounded font-black text-base bg-red-100 text-red-700";
+            } else if (diferencia > 0) {
+                divDif.className = "w-full flex justify-between items-center p-3 rounded font-black text-base bg-green-100 text-green-700";
+            } else {
+                divDif.className = "w-full flex justify-between items-center p-3 rounded font-black text-base bg-gray-100 text-gray-800";
+            }
+        }
+    }
+}
+
 function construirTablas() {
     const tbodyBArqueo = document.getElementById('tbodyBilletesArqueo');
-    if (tbodyBArqueo) {
+    if (tbodyBArqueo && tbodyBArqueo.children.length === 0) {
         denBilletes.forEach(d => {
             tbodyBArqueo.innerHTML += `
                 <tr class="border-b border-gray-100">
@@ -323,7 +536,7 @@ function construirTablas() {
     }
 
     const tbodyMArqueo = document.getElementById('tbodyMonedasArqueo');
-    if (tbodyMArqueo) {
+    if (tbodyMArqueo && tbodyMArqueo.children.length === 0) {
         denMonedas.forEach(d => {
             tbodyMArqueo.innerHTML += `
                 <tr class="border-b border-gray-100">
@@ -335,7 +548,7 @@ function construirTablas() {
     }
 
     const tbodyBRec = document.getElementById('tbodyBilletesRec');
-    if (tbodyBRec) {
+    if (tbodyBRec && tbodyBRec.children.length === 0) {
         denBilletes.forEach(d => {
             tbodyBRec.innerHTML += `
                 <tr class="border-b border-gray-100">
@@ -347,7 +560,7 @@ function construirTablas() {
     }
 
     const tbodyMRec = document.getElementById('tbodyMonedasRec');
-    if (tbodyMRec) {
+    if (tbodyMRec && tbodyMRec.children.length === 0) {
         denMonedas.forEach(d => {
             tbodyMRec.innerHTML += `
                 <tr class="border-b border-gray-100">
@@ -359,236 +572,20 @@ function construirTablas() {
     }
 }
 
-function calcularArqueo() {
-    let totalBilletes = 0;
-    denBilletes.forEach(d => {
-        const el = document.getElementById(`cantArqB_${d}`);
-        if (el) {
-            const cant = parseInt(el.value) || 0;
-            const tot = cant * d;
-            totalBilletes += tot;
-            document.getElementById(`totArqB_${d}`).innerText = '$' + tot.toLocaleString('es-MX', {minimumFractionDigits: 2});
-        }
-    });
-    if (document.getElementById('totalBilletesArqueo')) {
-        document.getElementById('totalBilletesArqueo').innerText = '$' + totalBilletes.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    construirTablas();
 
-    let totalMonedas = 0;
-    denMonedas.forEach(d => {
-        const el = document.getElementById(`cantArqM_${d}`);
-        if (el) {
-            const cant = parseInt(el.value) || 0;
-            const tot = cant * d;
-            totalMonedas += tot;
-            document.getElementById(`totArqM_${d}`).innerText = '$' + tot.toLocaleString('es-MX', {minimumFractionDigits: 2});
-        }
-    });
-    if (document.getElementById('totalMonedasArqueo')) {
-        document.getElementById('totalMonedasArqueo').innerText = '$' + totalMonedas.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    const totalEfectivo = totalBilletes + totalMonedas;
-    if (document.getElementById('lblTotalEfectivoArqueo')) {
-        document.getElementById('lblTotalEfectivoArqueo').innerText = '$' + totalEfectivo.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    const fondoCajaEl = document.getElementById('arqFondoCaja');
-    const fondoCaja = fondoCajaEl ? (parseFloat(fondoCajaEl.value) || 0) : 0;
-    const totalDeclarar = totalEfectivo - fondoCaja;
-    if (document.getElementById('lblTotalDeclararArqueo')) {
-        document.getElementById('lblTotalDeclararArqueo').innerText = '$' + totalDeclarar.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    const sistemaEl = document.getElementById('arqSistema');
-    const sistema = sistemaEl ? (parseFloat(sistemaEl.value) || 0) : 0;
-    const diferencia = totalDeclarar - sistema;
-
-    const lblDif = document.getElementById('lblDiferenciaArqueo');
-    const divDif = document.getElementById('divDiferenciaArqueo');
-    
-    if (lblDif && divDif) {
-        lblDif.innerText = (diferencia >= 0 ? '+' : '') + '$' + diferencia.toLocaleString('es-MX', {minimumFractionDigits: 2});
-        if (Math.abs(diferencia) < 0.01) {
-            divDif.className = "flex justify-between items-center p-2 rounded font-bold bg-green-100 text-green-800";
-        } else if (diferencia < 0) {
-            divDif.className = "flex justify-between items-center p-2 rounded font-bold bg-red-100 text-red-800";
-        } else {
-            divDif.className = "flex justify-between items-center p-2 rounded font-bold bg-blue-100 text-blue-800";
-        }
-    }
-}
-
-function calcularRecepcion() {
-    let totalBilletes = 0;
-    denBilletes.forEach(d => {
-        const el = document.getElementById(`cantRecB_${d}`);
-        if (el) {
-            const cant = parseInt(el.value) || 0;
-            const tot = cant * d;
-            totalBilletes += tot;
-            document.getElementById(`totRecB_${d}`).innerText = '$' + tot.toLocaleString('es-MX', {minimumFractionDigits: 2});
-        }
-    });
-    if (document.getElementById('totalBilletesRec')) {
-        document.getElementById('totalBilletesRec').innerText = '$' + totalBilletes.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    let totalMonedas = 0;
-    denMonedas.forEach(d => {
-        const el = document.getElementById(`cantRecM_${d}`);
-        if (el) {
-            const cant = parseInt(el.value) || 0;
-            const tot = cant * d;
-            totalMonedas += tot;
-            document.getElementById(`totRecM_${d}`).innerText = '$' + tot.toLocaleString('es-MX', {minimumFractionDigits: 2});
-        }
-    });
-    if (document.getElementById('totalMonedasRec')) {
-        document.getElementById('totalMonedasRec').innerText = '$' + totalMonedas.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    const totalContado = totalBilletes + totalMonedas;
-    if (document.getElementById('lblTotalEfectivoRec')) {
-        document.getElementById('lblTotalEfectivoRec').innerText = '$' + totalContado.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    const montoEstablecidoEl = document.getElementById('recMontoFijo');
-    const montoEstablecido = montoEstablecidoEl ? (parseFloat(montoEstablecidoEl.value) || 0) : 0;
-    if (document.getElementById('lblMontoEstRec')) {
-        document.getElementById('lblMontoEstRec').innerText = '$' + montoEstablecido.toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
-
-    const diferencia = totalContado - montoEstablecido;
-    const lblDif = document.getElementById('lblDiferenciaRec');
-    const divDif = document.getElementById('divDiferenciaRec');
-
-    if (lblDif && divDif) {
-        lblDif.innerText = (diferencia >= 0 ? '+' : '') + '$' + diferencia.toLocaleString('es-MX', {minimumFractionDigits: 2});
-        if (Math.abs(diferencia) < 0.01) {
-            divDif.className = "w-full flex justify-between items-center p-3 rounded font-black text-base bg-green-100 text-green-800";
-        } else if (diferencia < 0) {
-            divDif.className = "w-full flex justify-between items-center p-3 rounded font-black text-base bg-red-100 text-red-800";
-        } else {
-            divDif.className = "w-full flex justify-between items-center p-3 rounded font-black text-base bg-blue-100 text-blue-800";
-        }
-    }
-}
-
-// Manejador de pestañas y categorías
-function switchTab(tab) {
-    const tabs = {
-        'arqueo': { btn: 'btnTabArqueo', groupBtn: 'btnGroupArqueos', sec: 'sectionArqueo' },
-        'recepcion': { btn: 'btnTabRecepcion', groupBtn: 'btnGroupArqueos', sec: 'sectionRecepcion' },
-        'cajas': { btn: 'btnTabCajas', groupBtn: 'btnGroupEvaluacion', sec: 'sectionCajas' },
-        'LOPE': { btn: 'btnTabLOPE', groupBtn: 'btnGroupEvaluacion', sec: 'sectionLOPE' },
-        'actividades': { btn: 'btnTabActividades', groupBtn: 'btnGroupEvaluacion', sec: 'sectionActividades' },
-        'gerencia': { btn: 'btnTabGerencia', groupBtn: 'btnGroupChecklist', sec: 'sectionGerencia' },
-        'subgerencia': { btn: 'btnTabSubgerencia', groupBtn: 'btnGroupChecklist', sec: 'sectionSubgerencia' }
-    };
-
-    const groupBtns = ['btnGroupArqueos', 'btnGroupEvaluacion', 'btnGroupChecklist'];
-
-    // Restablecer estilos de grupos
-    groupBtns.forEach(gId => {
-        const gEl = document.getElementById(gId);
-        if (gEl) {
-            gEl.className = "font-semibold text-sm text-gray-500 hover:text-orange-600 flex items-center space-x-1 focus:outline-none";
-        }
+    ['arqFecha', 'recFecha', 'lopeFecha', 'cajasFecha', 'subFecha', 'gerFecha', 'actFecha'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.valueAsDate = new Date();
     });
 
-    // Ocultar todas las secciones
-    Object.keys(tabs).forEach(key => {
-        const secEl = document.getElementById(tabs[key].sec);
-        if (secEl) secEl.classList.add('hidden');
+    const ahora = new Date();
+    const horaStr = String(ahora.getHours()).padStart(2, '0') + ':' + String(ahora.getMinutes()).padStart(2, '0');
+    ['arqHora', 'recHora', 'lopeHora', 'subHora', 'gerHora', 'actHora'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = horaStr;
     });
 
-    // Activar sección elegida y resaltar categoría activa
-    if (tabs[tab]) {
-        const activeSec = document.getElementById(tabs[tab].sec);
-        const activeGroupBtn = document.getElementById(tabs[tab].groupBtn);
-
-        if (activeSec) activeSec.classList.remove('hidden');
-        if (activeGroupBtn) {
-            activeGroupBtn.className = "font-extrabold text-sm text-orange-600 flex items-center space-x-1 focus:outline-none border-b-2 border-orange-600 pb-1";
-        }
-    }
-
-    setTimeout(inicializarFirmas, 60);
-}
-
-// Firmas digitales
-const pads = {};
-
-function inicializarFirmas() {
-    const configuracion = {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
-        penColor: 'rgb(30, 41, 59)'
-    };
-
-    const ids = ['ArqResp', 'ArqSup', 'RecEnt', 'RecRec'];
-
-    ids.forEach(id => {
-        const canvas = document.getElementById(`canvasFirma${id}`);
-        if (canvas && canvas.offsetParent !== null) {
-            const rect = canvas.getBoundingClientRect();
-            if (canvas.width !== Math.floor(rect.width * window.devicePixelRatio)) {
-                canvas.width = rect.width * window.devicePixelRatio;
-                canvas.height = rect.height * window.devicePixelRatio;
-                const ctx = canvas.getContext('2d');
-                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-            }
-            if (!pads[id]) {
-                pads[id] = new SignaturePad(canvas, configuracion);
-            }
-        }
-    });
-}
-
-function clearSignature(id) {
-    if (pads[id]) pads[id].clear();
-}
-
-window.addEventListener('resize', () => {
-    setTimeout(inicializarFirmas, 150);
+    inicializarFirmas();
 });
-
-function previsualizarImagen(input, idContenedor) {
-    const contenedor = document.getElementById(idContenedor);
-    if (!contenedor) return;
-
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            const divFoto = document.createElement('div');
-            divFoto.className = 'relative border border-gray-200 rounded-lg overflow-hidden bg-gray-50 aspect-square flex items-center justify-center';
-
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.className = 'w-full h-full object-cover';
-
-            const btnEliminar = document.createElement('button');
-            btnEliminar.type = 'button';
-            btnEliminar.innerHTML = '&times;';
-            btnEliminar.className = 'no-print absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full w-6 h-6 flex items-center justify-center text-sm shadow transition';
-            btnEliminar.onclick = function() {
-                divFoto.remove();
-            };
-
-            divFoto.appendChild(img);
-            divFoto.appendChild(btnEliminar);
-            contenedor.appendChild(divFoto);
-
-            input.value = '';
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-construirTablas();
-calcularArqueo();
-calcularRecepcion();
-switchTab('arqueo');
-setTimeout(inicializarFirmas, 150);
