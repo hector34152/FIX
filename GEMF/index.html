@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Auditoría de Máquinas - Fix Ferreterías</title>
+    <!-- Librería para generación nativa de Excel .xlsx -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <div class="brand-title">
+        <span>FIX FERRETERÍAS</span>
+        <span class="brand-badge">Guia de Exhibición Maquinas 2025</span>
+    </div>
+</header>
+
+<div class="stats-bar">
+    <div class="stat-item" style="color: var(--primary-blue);">
+        Total: <span id="stat-total">0</span>
+    </div>
+    <div class="stat-item" style="color: var(--success-green);">
+        ✓ Cumple: <span id="stat-pass">0</span>
+    </div>
+    <div class="stat-item" style="color: var(--danger-red);">
+        ✗ No cumple: <span id="stat-fail">0</span>
+    </div>
+    <div class="stat-item" style="color: var(--text-muted);">
+        Pendiente: <span id="stat-pending">0</span>
+    </div>
+</div>
+
+<!-- Category Filters -->
+<div class="category-nav" id="category-nav">
+    <button class="cat-btn active" onclick="filterCategory('ALL')">Todas</button>
+    <button class="cat-btn" onclick="filterCategory('Aspiradoras')">Aspiradoras</button>
+    <button class="cat-btn" onclick="filterCategory('Bombas de Agua')">Bombas de Agua</button>
+    <button class="cat-btn" onclick="filterCategory('Caladoras')">Caladoras</button>
+    <button class="cat-btn" onclick="filterCategory('Calentadores de paso y deposito')">Calentadores de paso y deposito</button>
+    <button class="cat-btn" onclick="filterCategory('Canteadores')">Canteadores</button>
+    <button class="cat-btn" onclick="filterCategory('Cepillos')">Cepillos</button>
+    <button class="cat-btn" onclick="filterCategory('Colectores de polvo')">Colectores de polvo</button>
+    <button class="cat-btn" onclick="filterCategory('Compresores')">Compresores</button>
+    <button class="cat-btn" onclick="filterCategory('Compresores (KITS)')">Compresores (KITS)</button>
+    <button class="cat-btn" onclick="filterCategory('Cortadores')">Cortadores</button>
+    <button class="cat-btn" onclick="filterCategory('Desbrozadoras')">Desbrozadoras</button>
+    <button class="cat-btn" onclick="filterCategory('Desmalezadoras')">Desmalezadoras</button>
+    <button class="cat-btn" onclick="filterCategory('Destornilladores')">Destornilladores</button>
+    <button class="cat-btn" onclick="filterCategory('Esmeriles')">Esmeriles</button>
+    <button class="cat-btn" onclick="filterCategory('Esmeril Neumático')">Esmeril Neumático</button>
+    <button class="cat-btn" onclick="filterCategory('Gatos')">Gatos</button>
+    <button class="cat-btn" onclick="filterCategory('Generadores')">Generadores</button>
+    <button class="cat-btn" onclick="filterCategory('Herramienta rotativa')">Herramienta rotativa</button>
+    <button class="cat-btn" onclick="filterCategory('Herramienta Industrial')">Herramienta Industrial</button>
+    <button class="cat-btn" onclick="filterCategory('Hidrolavadoras')">Hidrolavadoras</button>
+    <button class="cat-btn" onclick="filterCategory('Lijadoras de banda')">Lijadoras de banda</button>
+    <button class="cat-btn" onclick="filterCategory('Lijadoras orbitales / Roto orbitales')">Lijadoras orbitales / Roto orbitales</button>
+    <button class="cat-btn" onclick="filterCategory('Limpiadora a vapor')">Limpiadora a vapor</button>
+    <button class="cat-btn" onclick="filterCategory('Llaves de impacto y Remachadoras neumáticas')">Llaves de impacto y Remachadoras neumáticas</button>
+    <button class="cat-btn" onclick="filterCategory('Motosierras / Cortasetos')">Motosierras / Cortasetos</button>
+    <button class="cat-btn" onclick="filterCategory('Motobombas')">Motobombas</button>
+    <button class="cat-btn" onclick="filterCategory('Martillos demoledores')">Martillos demoledores</button>
+    <button class="cat-btn" onclick="filterCategory('Multiherramienta')">Multiherramienta</button>
+    <button class="cat-btn" onclick="filterCategory('Pistola de calor')">Pistola de calor</button>
+    <button class="cat-btn" onclick="filterCategory('Pistolas para pintar succión')">Pistolas para pintar succión</button>
+    <button class="cat-btn" onclick="filterCategory('Pistolas para pintar de gravedad')">Pistolas para pintar de gravedad</button>
+    <button class="cat-btn" onclick="filterCategory('Pistolas para pintar retoques')">Pistolas para pintar retoques</button>
+    <button class="cat-btn" onclick="filterCategory('Pistolas para pintar eléctricas')">Pistolas para pintar eléctricas</button>
+    <button class="cat-btn" onclick="filterCategory('Podadoras')">Podadoras</button>
+    <button class="cat-btn" onclick="filterCategory('Pulidoras')">Pulidoras</button>
+    <button class="cat-btn" onclick="filterCategory('Rotomartillos y taladros')">Rotomartillos y taladros</button>
+    <button class="cat-btn" onclick="filterCategory('Rotomartillos y taladros inalámbricos')">Rotomartillos y taladros inalámbricos</button>
+    <button class="cat-btn" onclick="filterCategory('Taladros de piso')">Taladros de piso</button>
+    <button class="cat-btn" onclick="filterCategory('Routers')">Routers</button>
+    <button class="cat-btn" onclick="filterCategory('Sierra circular')">Sierra circular</button>
+    <button class="cat-btn" onclick="filterCategory('Sierra Cinta')">Sierra Cinta</button>
+    <button class="cat-btn" onclick="filterCategory('Sierra de inglete')">Sierra de inglete</button>
+    <button class="cat-btn" onclick="filterCategory('Sierra de Mesa')">Sierra de Mesa</button>
+    <button class="cat-btn" onclick="filterCategory('Sierra sable')">Sierra sable</button>
+    <button class="cat-btn" onclick="filterCategory('Sopladoras')">Sopladoras</button>
+    <button class="cat-btn" onclick="filterCategory('Sopladoras')">Sopladoras</button>
+    <button class="cat-btn" onclick="filterCategory('Soldadoras de microalambre')">Soldadoras de microalambre</button>
+
+</div>
+
+<div class="controls">
+    <input type="text" id="search-input" class="search-input" placeholder="Buscar por código (ej: 101523) o clave..." oninput="handleSearch()">
+</div>
+
+<div class="container">
+    <div class="guide-box">
+        <h4>Reglas Generales de Exhibición:</h4>
+        • Solo exhibir máquinas de <strong>última generación</strong> (sistemas PEPS).<br>
+        • Deben exhibirse limpias, con sus accesorios y consumibles completos en buen estado.<br>
+        • Equipos &gt;1800W <strong>NO deben estar conectados</strong> por seguridad.<br>
+        • Modelos inalámbricos: <strong>NO colocar pila en exhibición</strong>. Usar accesorio retráctil (Código 1192).
+    </div>
+
+    <div id="machine-list">
+        <!-- Rendered via Javascript -->
+    </div>
+</div>
+
+<div class="bottom-bar">
+    <button class="btn-action btn-secondary" onclick="exportDataExcel()">Exportar Excel (.xlsx)</button>
+    <button class="btn-action btn-primary" onclick="showSummary()">Ver Resumen</button>
+</div>
+
+<!-- Modal Resumen -->
+<div class="modal" id="summary-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Resumen</h3>
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+        </div>
+        <div id="modal-body">
+            <!-- Summary contents -->
+        </div>
+        <button class="btn-action btn-primary" style="width: 100%; margin-top: 15px;" onclick="closeModal()">Cerrar</button>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
