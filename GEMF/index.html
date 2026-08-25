@@ -20,6 +20,15 @@
             max-width: 28cm !important;
             box-sizing: border-box;
         }
+        @layer utilities {
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+        }
+        
     </style>
 </head>
 <body class=" font-sans pb-12">
