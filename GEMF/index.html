@@ -2762,39 +2762,42 @@
             <button onclick="window.print()">Guardar en PDF</button>
         </section>
     </main>
-    <script>
-            const form = document.getElementById('tablas');
-
-    // 1. Al cargar la página, restaurar los datos
+<script>
     document.addEventListener('DOMContentLoaded', () => {
-      const inputs = form.querySelectorAll('input, select, textarearea, checkbox');
+        // Seleccionar todos los inputs, textareas y selects dentro del documento
+        const elementos = document.querySelectorAll('input, textarea, select');
 
-      inputs.forEach(input => {
-        const valorGuardado = localStorage.getItem(input.name || input.id);
-        
-        if (valorGuardado !== null) {
-          if (input.type === 'checkbox' || input.type === 'radio') {
-            input.checked = valorGuardado === 'true';
-          } else {
-            input.value = valorGuardado;
-          }
+        elementos.forEach((elem, index) => {
+            // Generar una clave única basada en id, name o su posición (índice)
+            const clave = elem.id || elem.name || `campo_auto_${index}`;
+
+            // 1. Cargar el valor guardado si existe
+            const valorGuardado = localStorage.getItem(clave);
+            if (valorGuardado !== null) {
+                if (elem.type === 'checkbox' || elem.type === 'radio') {
+                    elem.checked = valorGuardado === 'true';
+                } else {
+                    elem.value = valorGuardado;
+                }
+            }
+
+            // 2. Guardar automáticamente cada vez que el usuario interactúe con un campo
+            elem.addEventListener('input', () => {
+                const valor = (elem.type === 'checkbox' || elem.type === 'radio') 
+                    ? elem.checked 
+                    : elem.value;
+                localStorage.setItem(clave, valor);
+            });
+        });
+    });
+
+    // Función opcional para limpiar los datos del arqueo/evaluación actual
+    function limpiarFormulario() {
+        if (confirm('¿Deseas borrar los datos guardados de esta evaluación?')) {
+            localStorage.clear();
+            location.reload();
         }
-      });
-    });
-
-    // 2. Escuchar cambios e ir guardando automáticamente
-    form.addEventListener('input', (e) => {
-      const input = e.target;
-      const clave = input.name || input.id;
-      
-      if (!clave) return; // Se requiere un name o id para identificar el campo
-
-      const valor = (input.type === 'checkbox' || input.type === 'radio') 
-        ? input.checked 
-        : input.value;
-
-      localStorage.setItem(clave, valor);
-    });
-    </script>
+    }
+</script>
 </body>
 </html>
