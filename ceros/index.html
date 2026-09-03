@@ -134,8 +134,8 @@
                 innerHTML += `<td class="py-1 px-2"><input type="text" placeholder="Código..." class="w-full p-1 border rounded font-mono uppercase focus:ring-1 focus:ring-orange-500 outline-none text-xs"></td>`;
             } else if (type === '50') {
                 innerHTML += `
-                    <td class="py-1 px-2"><input type="text" placeholder="Código..." class="w-full p-1 border rounded font-mono uppercase focus:ring-1 focus:ring-orange-500 outline-none text-xs"></td>
-                    <td class="py-1 px-2"><input type="number" min="1" placeholder="Cant." class="w-full p-1 border rounded text-center focus:ring-1 focus:ring-orange-500 outline-none text-xs"></td>
+                    <td class="py-1 px-2"><input type="text" pattern="[0-9]*" placeholder="Código..." class="w-full p-1 border rounded font-mono uppercase focus:ring-1 focus:ring-orange-500 outline-none text-xs"></td>
+                    <td class="py-1 px-2"><input type="number" pattern="[0-9]*" min="1" placeholder="Cant." class="w-full p-1 border rounded text-center focus:ring-1 focus:ring-orange-500 outline-none text-xs"></td>
                 `;
             } else if (type === 'conexiones') {
                 innerHTML += `
