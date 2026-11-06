@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Evaluación Operativa Fix</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Estilos generales */
+    * { box-sizing: border-box; }
+    body { 
+      font-family: Arial, Helvetica, sans-serif; 
+      background-color: #383c3f;
+      color: #333;
+    }
+
+    /* Formulario */
+    .form-container {
+      background: white;
+      border-radius: 8px;
+    }
+
+    fieldset {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      background-color: #f9fafb;
+    }
+
+    legend {
+      font-weight: bold;
+      color: #004b87;
+      font-size: 13px;
+      padding: 0 6px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 11px;
+      color: #374151;
+    }
+
+    .subtext {
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    input[type="text"], 
+    input[type="number"], 
+    input[type="date"], 
+    select, 
+    textarea {
+      padding: 5px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 11.5px;
+      background-color: #fff;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #004b87;
+      box-shadow: 0 0 0 2px rgba(0, 75, 135, 0.15);
+    }
+
+    input[readonly] {
+      background-color: #eef2f5;
+      font-weight: bold;
+      color: #004b87;
+    }
+
+    .eval-item {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-left: 4px solid #004b87;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .eval-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .eval-title {
+      font-weight: bold;
+      color: #004b87;
+      font-size: 11.5px;
+    }
+
+    .score-badge {
+      color: #004b87;
+      background-color: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .radio-label {
+      font-weight: normal;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ESTILOS DE LA HOJA OFICIAL (Formato de Impresión) */
+    .page {
+      width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      background: white;
+      padding: 16px 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      font-size: 8.5px;
+      line-height: 1.15;
+    }
+
+    /* Header Formato */
+    .header-bar-doc {
+      background-color: #004b87;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 3px;
+      margin-bottom: 6px;
+    }
+    .header-title-doc {
+      font-weight: bold;
+      font-size: 17px;
+      letter-spacing: 0.5px;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .logo-svg {
+      height: 26px;
+    }
+
+    /* Datos del Cliente Documento */
+    .client-title { 
+      color: #004b87; 
+      font-size: 11.5px; 
+      font-weight: bold; 
+      margin-bottom: 5px; 
+    }
+
+    .client-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 2.6fr 0.8fr 1.4fr 0.8fr 0.7fr; 
+      gap: 5px; 
+      margin-bottom: 8px; 
+    }
+
+    .card { 
+      background-color: #e6e6e6; 
+      border-radius: 3px; 
+      padding: 3px 5px; 
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-lbl { font-size: 8px; font-weight: bold; color: #222; }
+    .card-val { font-size: 8px; margin-top: 2px; color: #444; font-weight: bold; word-break: break-word; }
+    .card-big { font-size: 20px; font-weight: normal; color: #111; margin-top: 2px; }
+
+    /* Filas de Evaluación Documento */
+    .eval-row { display: flex; align-items: stretch; margin-bottom: 5px; gap: 5px; }
+    .side-num { 
+      width: 20px; 
+      background-color: #004b87; 
+      color: white; 
+      font-weight: bold; 
+      font-size: 10px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .eval-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+
+    .eval-header-doc { font-weight: bold; color: #004b87; font-size: 9px; margin-bottom: 3px; }
+    .eval-subtext-doc { font-weight: normal; color: #004b87; font-size: 7.5px; }
+
+    /* Grids Puntos 1 y 2 */
+    .p1-body { display: flex; gap: 4px; align-items: center; width: 100%; }
+    .p1-labels { display: flex; flex-direction: column; gap: 3px; width: 125px; flex-shrink: 0; }
+    .p1-lbl-item { display: flex; justify-content: space-between; align-items: center; font-size: 7.5px; color: #333; }
+    
+    .p1-val-box { 
+      background: #e6e6e6; 
+      border-radius: 3px; 
+      width: 32px; 
+      height: 16px;
+      text-align: center; 
+      font-weight: bold; 
+      line-height: 16px; 
+      font-size: 8px;
+    }
+
+    .p1-matrix { display: flex; flex-direction: column; gap: 3px; flex-grow: 1; }
+    .p1-row { display: grid; grid-template-columns: 50px repeat(16, 1fr); gap: 3px; text-align: center; }
+    .cell { background: #e6e6e6; border-radius: 2px; font-size: 7.5px; height: 16px; display: flex; align-items: center; justify-content: center; }
+    .cell-lbl { background: #e6e6e6; border-radius: 2px; font-size: 7px; font-weight: bold; display: flex; align-items: center; justify-content: center; height: 16px; padding: 0 2px; }
+
+    .subtotal-box { 
+      width: 55px; 
+      background: #e6e6e6; 
+      border-radius: 3px; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      flex-shrink: 0;
+      align-self: stretch;
+    }
+    .subtotal-lbl { font-size: 7.5px; font-weight: bold; margin-bottom: 2px; }
+    .subtotal-val { font-size: 14px; font-weight: bold; color: #222; }
+
+    /* Layout Puntos 3 al 11 */
+    .p-generic { display: flex; gap: 5px; align-items: center; width: 100%; }
+    .p-title { width: 180px; font-weight: bold; color: #004b87; font-size: 9px; flex-shrink: 0; }
+    .p-val-badge { width: 52px; height: 32px; background: #e6e6e6; border-radius: 3px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 7px; font-weight: bold; line-height: 1.1; flex-shrink: 0; }
+    
+    .yes-no-group { display: flex; gap: 4px; }
+    .yn-box { width: 65px; display: flex; flex-direction: column; gap: 3px; }
+    .yn-top { background: #e6e6e6; border-radius: 3px; text-align: center; padding: 2px; font-size: 7.5px; height: 14px; display: flex; align-items: center; justify-content: center; }
+    .yn-bot { background: #e6e6e6; border-radius: 3px; text-align: center; font-size: 8.5px; font-weight: bold; height: 16px; display: flex; align-items: center; justify-content: center; }
+
+    .p-desc { flex-grow: 1; background: #e6e6e6; border-radius: 3px; padding: 3px 8px; font-size: 7.5px; text-align: center; color: #333; height: 33px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; }
+
+    /* Tabla Parámetros de Ventas */
+    .param-table-container { margin: 4px 0 6px 25px; }
+    .param-table { width: 500px; border-collapse: collapse; margin: 0 auto; }
+    .param-table th { background: #b0b0b0; color: #000; font-size: 7.5px; border: 1px solid #333; padding: 2px; font-weight: bold; }
+    .param-table td { border: 1px solid #333; text-align: center; font-size: 7px; padding: 1px; }
+
+    /* Punto 12 */
+    .p12-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; flex-grow: 1; }
+    .p12-item { display: flex; gap: 3px; align-items: center; }
+    .p12-txt { flex-grow: 1; background: #e6e6e6; border-radius: 3px; padding: 3px 6px; font-size: 6.5px; height: 26px; display: flex; align-items: center; line-height: 1.1; }
+
+    /* Observaciones y Footer Documento */
+    .footer-section { display: flex; gap: 5px; margin-top: 4px; align-items: stretch; }
+    .obs-box { flex-grow: 1; background: #e6e6e6; border-radius: 3px; padding: 4px 8px; font-size: 7.5px; line-height: 1.2; min-height: 35px; }
+    .total-box { width: 55px; background: #e6e6e6; border-radius: 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    .signatures-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; text-align: center; }
+    .sig-line { border-top: 1px solid #000; padding-top: 3px; font-size: 7.5px; }
+    .sig-name { font-family: 'Courier New', monospace; font-size: 9px; margin-bottom: 2px; min-height: 12px; }
+
+    /* CONFIGURACIÓN DE IMPRESIÓN (@media print) */
+    @media print {
+      @page {
+        size: letter portrait;
+        margin: 0;
+      }
+      body {
+        background-color: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-container {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+      .page {
+        box-shadow: none !important;
+        margin: 0 !important;
+        width: 100% !important;
+        padding: 12px 18px !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-700 min-h-screen">
+  <!-- CONTENEDOR PRINCIPAL DOS COLUMNAS -->
+  <main>
+    
+    <!-- COLUMNA IZQUIERDA: FORMULARIO DE CAPTURA (NO IMPRIMIBLE) -->
+    <section>
+      <div class="form-container p-5 shadow-lg border border-gray-200 sticky top-16 max-h-[calc(100vh-80px)] overflow-y-auto">
+        <div class="bg-blue-900 text-white font-bold text-sm px-4 py-2 rounded mb-4 flex justify-between items-center">
+          <span>CAPTURA DE EVALUACIÓN</span>
+        </div>
+
+        <form id="evalForm" onsubmit="return false;">
+          
+          <!-- DATOS DEL CLIENTE -->
+          <fieldset>
+            <legend>Datos del Cliente y Periodo</legend>
+            
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" value="2026-11-03">
+              </div>
+              <div class="form-group">
+                <label for="no_cliente">No. Cliente:</label>
+                <input type="text" id="no_cliente" value="547176">
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="razon_social">Razón Social:</label>
+              <input type="text" id="razon_social" value="Fixzac (Fix Ferreterías Zacatecas)">
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="direccion">Dirección:</label>
+              <input type="text" id="direccion" value="Blvd López Portillo No.746 Int. 21 Col. Boulevares Zacatecas, Zacatecas CP 98065">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="form-group">
+                <label for="antiguedad">Antigüedad (meses):</label>
+                <input type="number" id="antiguedad" value="92">
+              </div>
+              <div class="form-group">
+                <label for="mts2">Mts²:</label>
+                <input type="number" id="mts2" value="410">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="form-group">
+                <label for="fecha_inicial">Fecha Inicial Revisión:</label>
+                <input type="date" id="fecha_inicial" value="2026-08-02">
+              </div>
+              <div class="form-group">
+                <label for="fecha_final">Fecha Final Revisión:</label>
+                <input type="date" id="fecha_final" value="2026-11-02">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="form-group">
+                <label for="venta_promedio">Venta Promedio ($):</label>
+                <input type="number" id="venta_promedio" value="" step="0.01">
+              </div>
+              <div class="form-group">
+                <label for="venta_fabrica">Venta Prom. Fábrica ($):</label>
+                <input type="number" id="venta_fabrica" value="" step="0.01">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="form-group">
+                <label for="tickets">Tickets:</label>
+                <input type="number" id="tickets" value="">
+              </div>
+              <div class="form-group">
+                <label for="part_fabrica">Part. Fábrica (%):</label>
+                <input type="number" id="part_fabrica" value="" step="0.1">
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- PUNTOS DE EVALUACIÓN -->
+          <fieldset>
+            <legend>Puntos de Evaluación</legend>
+
+            <!-- Punto 1 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">1. Códigos sin existencia en piso de venta gancho y charola</div>
+                <div class="score-badge"><span id="pts_p1">3.0</span> / 3.0</div>
+              </div>
+              <div class="subtext mb-2">Tolerancia de 5 códigos; a partir de $50,000 se otorga 1 adicional por cada $10,000</div>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="form-group"><label>Sin exist.:</label><input type="number" id="p1_sin_existencia" value="0"></div>
+                <div class="form-group"><label>Justificados:</label><input type="number" id="p1_justificados" readonly></div>
+                <div class="form-group"><label>A calificar:</label><input type="number" id="p1_a_calificar" readonly></div>
+              </div>
+            </div>
+
+            <!-- Punto 2 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">2. Códigos con menos del 50% de capacidad en gancho y charola.</div>
+                <div class="score-badge"><span id="pts_p2">1.5</span> / 1.5</div>
+              </div>
+              <div class="subtext mb-2">Tolerancia de 10 códigos; a partir de $50,000 se otorga 1 adicional por cada $10,000.</div>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="form-group"><label>&lt; 50% cap.:</label><input type="number" id="p2_menos_50" value="0"></div>
+                <div class="form-group"><label>Justificados:</label><input type="number" id="p2_justificados" readonly></div>
+                <div class="form-group"><label>A calificar:</label><input type="number" id="p2_a_calificar" readonly></div>
+              </div>
+            </div>
+
+            <!-- Punto 3 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">3. Confiabilidad de inventario.</div>
+                <div class="score-badge"><span id="pts_p3">0.5</span> / 0.5</div>
+              </div>
+              <div class="flex gap-4 mt-1">
+                <label class="radio-label"><input type="radio" name="p3" value="si" checked> Sí (0.5 pts)</label>
+                <label class="radio-label"><input type="radio" name="p3" value="no"> No (0 pts)</label>
+              </div>
+            </div>
+
+            <!-- Punto 4 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">4. Planogramas actualizados.</div>
+                <div class="score-badge"><span id="pts_p4">0.0</span> / 0.5</div>
+              </div>
+              <div class="flex gap-4 mt-1">
+                <label class="radio-label"><input type="radio" name="p4" value="si" checked> Sí (0.5 pts)</label>
+                <label class="radio-label"><input type="radio" name="p4" value="no"> No (0 pts)</label>
+              </div>
+            </div>
+
+            <!-- Punto 5 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">5. Plantilla completa</div>
+                <div class="score-badge"><span id="pts_p5">1.0</span> / 1.0</div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 items-center mt-1">
+                <div class="form-group"><label>Personal Actual:</label><input type="number" id="p5_personas" value="0"></div>
+                <div class="form-group"><label>Requerido (Tabla):</label><input type="number" id="p5_requerido" value="10" readonly></div>
+              </div>
+            </div>
+
+            <!-- Punto 6 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">6. Producto evidentemente sucio.</div>
+                <div class="score-badge"><span id="pts_p6">0.5</span> / 0.5</div>
+              </div>
+              <div class="subtext mb-1">Tolerancia inicial de 10. Adicional se otorga 1 por cada $10,000 en Venta Promedio.</div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="form-group"><label>Productos sucios:</label><input type="number" id="p6_incidencias" value="0"></div>
+                <div class="form-group"><label>Tol. máxima:</label><input type="number" id="p6_tolerancia" value="25"></div>
+              </div>
+            </div>
+
+            <!-- Punto 7 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">7. Producto etiquetado y señalización.</div>
+                <div class="score-badge"><span id="pts_p7">0.4</span> / 0.4</div>
+              </div>
+              <div class="subtext mb-1">Tolerancia hasta 5 etiquetas o incumplimientos.</div>
+              <div class="form-group"><label>Incidencias:</label><input type="number" id="p7_incidencias" value="0"></div>
+            </div>
+
+            <!-- Punto 8 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">8. Producto ordenado (Orden, careo, frenteo, distribución).</div>
+                <div class="score-badge"><span id="pts_p8">0.3</span> / 0.3</div>
+              </div>
+              <div class="subtext mb-1">Tolerancia hasta 10 códigos.</div>
+              <div class="form-group"><label>Incidencias:</label><input type="number" id="p8_incidencias" value="0"></div>
+            </div>
+
+            <!-- Punto 9 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">9. Máquinas de última generación y accesorios</div>
+                <div class="score-badge"><span id="pts_p9">0.0</span> / 0.3</div>
+              </div>
+              <div class="flex gap-4 mt-1">
+                <label class="radio-label"><input type="radio" name="p9" value="si" checked> Sí (0.3 pts)</label>
+                <label class="radio-label"><input type="radio" name="p9" value="no"> No (0 pts)</label>
+              </div>
+            </div>
+
+            <!-- Punto 10 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">10. Cumplimiento cajas de cobro.</div>
+                <div class="score-badge"><span id="pts_p10">0.5</span> / 0.5</div>
+              </div>
+              <div class="flex gap-4 mt-1">
+                <label class="radio-label"><input type="radio" name="p10" value="si" checked> Sí (0.5 pts)</label>
+                <label class="radio-label"><input type="radio" name="p10" value="no"> No (0 pts)</label>
+              </div>
+            </div>
+
+            <!-- Punto 11 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">11. Respeto layout / pasillos libres</div>
+                <div class="score-badge"><span id="pts_p11">0.5</span> / 0.5</div>
+              </div>
+              <div class="flex gap-4 mt-1">
+                <label class="radio-label"><input type="radio" name="p11" value="si" checked> Sí (0.5 pts)</label>
+                <label class="radio-label"><input type="radio" name="p11" value="no"> No (0 pts)</label>
+              </div>
+            </div>
+
+            <!-- Punto 12 -->
+            <div class="eval-item">
+              <div class="eval-header">
+                <div class="eval-title">12. Imagen general de inmueble</div>
+                <div class="score-badge"><span id="pts_p12">1.0</span> / 1.0</div>
+              </div>
+              
+              <div class="space-y-2 mt-2">
+                <div>
+                  <div class="subtext font-semibold">Limpieza general (0.2 pts)</div>
+                  <div class="flex gap-3">
+                    <label class="radio-label"><input type="radio" name="p12a" value="si" checked> Sí</label>
+                    <label class="radio-label"><input type="radio" name="p12a" value="no"> No</label>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="subtext font-semibold">Mantenimiento tienda (0.2 pts)</div>
+                  <div class="flex gap-3">
+                    <label class="radio-label"><input type="radio" name="p12b" value="si" checked> Sí</label>
+                    <label class="radio-label"><input type="radio" name="p12b" value="no"> No</label>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="subtext font-semibold">Rotulación (0.2 pts)</div>
+                  <div class="flex gap-3">
+                    <label class="radio-label"><input type="radio" name="p12c" value="si" checked> Sí</label>
+                    <label class="radio-label"><input type="radio" name="p12c" value="no"> No</label>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="subtext font-semibold">Gráficos autorizados (0.2 pts)</div>
+                  <div class="flex gap-3">
+                    <label class="radio-label"><input type="radio" name="p12d" value="si" checked> Sí</label>
+                    <label class="radio-label"><input type="radio" name="p12d" value="no"> No</label>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="subtext font-semibold">Atención a clientes (0.2 pts)</div>
+                  <div class="flex gap-3">
+                    <label class="radio-label"><input type="radio" name="p12e" value="si" checked> Sí</label>
+                    <label class="radio-label"><input type="radio" name="p12e" value="no"> No</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- CALIFICACIÓN Y COMENTARIOS -->
+          <fieldset>
+            <legend>Comentarios y Firmas</legend>
+            
+            <div class="form-group mb-3">
+              <label for="comentarios">Comentarios para la siguiente visita:</label>
+              <textarea id="comentarios" rows="3"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mb-2">
+              <div class="form-group"><label>Auditor:</label><input type="text" id="sig_auditor" value=""></div>
+              <div class="form-group"><label>Encargado Tienda:</label><input type="text" id="sig_encargado" value=""></div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="form-group"><label>Supervisor Tienda:</label><input type="text" id="sig_supervisor" value=""></div>
+              <div class="form-group"><label>Director / Gerente:</label><input type="text" id="sig_gerente" value=""></div>
+            </div>
+          </fieldset>
+
+        </form>
+          <br>
+          <button style="background-color: #004b87; color: white; padding: .5rem; border-radius: 1rem;" onclick="imprimirDiv('formato')">Guardar en PDF</button>
+      </div>
+    </section>
+
+    <!-- COLUMNA DERECHA: FORMATO OFICIAL (HOJA DIGITAL PREVISUALIZADA / IMPRIMIBLE) -->
+    <section id="formato" class="flex-grow flex justify-center">
+      <div class="page" id="documentoOficial">
+        
+        <!-- ENCABEZADO DOCUMENTO -->
+        <div class="header-bar-doc">
+          <div class="header-title-doc">EVALUACIÓN OPERATIVA FIX</div>
+          <div class="logo-container">
+            <img class="logo-img" src="LogoFix2025.svg" alt="FIX Ferreterías">
+          </div>
+        </div>
+
+        <div class="client-title">Datos del Cliente</div>
+
+        <!-- DATOS CLIENTE GRID -->
+        <div class="client-grid">
+          <!-- Col 1 -->
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <div class="card"><div class="card-lbl">Fecha:</div><div class="card-val" id="doc_fecha">3/11/26</div></div>
+            <div class="card" style="margin-top:auto;"><div class="card-lbl">No. Cliente:</div><div class="card-val" id="doc_no_cliente">547176</div></div>
+          </div>
+          <!-- Col 2 -->
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <div class="card"><div class="card-lbl">Razón Social:</div><div class="card-val" id="doc_razon_social">Fixzac (Fix Ferreterías Zacatecas)</div></div>
+            <div class="card"><div class="card-lbl">Dirección:</div><div class="card-val" id="doc_direccion">Blvd López Portillo No.746 Int. 21 Col. Boulevares Zacatecas, Zacatecas CP 98065</div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3px;">
+              <div class="card"><div class="card-lbl">Antigüedad:</div><div class="card-val" id="doc_antiguedad">92 meses</div></div>
+              <div class="card"><div class="card-lbl">Mts 2:</div><div class="card-val" id="doc_mts2">410</div></div>
+            </div>
+          </div>
+          <!-- Col 3 -->
+          <div class="card" style="display:flex; flex-direction:column; justify-space-between;">
+            <div class="card-lbl">Periodo de Revisión</div>
+            <div><div class="card-lbl" style="font-weight:normal; font-size:6.5px;">Fecha Inicial</div><div class="card-val" id="doc_fecha_inicial">2/8/26</div></div>
+            <div><div class="card-lbl" style="font-weight:normal; font-size:6.5px;">Fecha Final</div><div class="card-val" id="doc_fecha_final">2/11/26</div></div>
+          </div>
+          <!-- Col 4 -->
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <div class="card"><div class="card-lbl">Venta Promedio ($):</div><div class="card-val" id="doc_venta_promedio">$ 189,907.29</div></div>
+            <div class="card"><div class="card-lbl">Venta Promedio Fábrica ($):</div><div class="card-val" id="doc_venta_fabrica">$ 102,488.17</div></div>
+            <div class="card"><div class="card-lbl">Tickets:</div><div class="card-val" id="doc_tickets">361</div></div>
+          </div>
+          <!-- Col 5 -->
+          <div class="card">
+            <div class="card-lbl">Participación Precio Fábrica (%):</div>
+            <div class="card-big" id="doc_part_fabrica">53.9</div>
+          </div>
+          <!-- Col 6 -->
+          <div class="card">
+            <div class="card-lbl">Calificación Final:</div>
+            <div class="card-big" style="font-size:26px;" id="doc_calificacion_final">9.2</div>
+          </div>
+        </div>
+
+        <!-- PUNTO 1 -->
+        <div class="eval-row">
+          <div class="side-num">1</div>
+          <div class="eval-content">
+            <div class="eval-header-doc">
+              Códigos sin existencia en piso de venta gancho y charola 
+              <span class="eval-subtext-doc">(Tolerancia de 5 códigos; a partir de $50,000 de venta promedio se otorga 1 código adicional por cada $10,000)</span>
+            </div>
+            <div class="p1-body">
+              <div class="p1-labels">
+                <div class="p1-lbl-item">Sin existencia <span class="p1-val-box" id="doc_p1_sin">5</span></div>
+                <div class="p1-lbl-item">Justificados <span class="p1-val-box" id="doc_p1_just">18</span></div>
+                <div class="p1-lbl-item">A calificar <span class="p1-val-box" id="doc_p1_calif">0</span></div>
+              </div>
+              <div class="p1-matrix">
+                <div class="p1-row">
+                  <div class="cell-lbl">Secuencia</div>
+                  <div class="cell">5</div><div class="cell">6</div><div class="cell">7</div><div class="cell">8</div><div class="cell">9</div><div class="cell">10</div><div class="cell">11</div><div class="cell">12</div><div class="cell">13</div><div class="cell">14</div><div class="cell">15</div><div class="cell">16</div><div class="cell">17</div><div class="cell">18</div><div class="cell">19</div><div class="cell">20</div>
+                </div>
+                <div class="p1-row">
+                  <div class="cell-lbl" style="font-size:6.5px;">Valor<br>(3.0 pts)</div>
+                  <div class="cell">19</div><div class="cell">20</div><div class="cell">21</div><div class="cell">22</div><div class="cell">23</div><div class="cell">24</div><div class="cell">25</div><div class="cell">26</div><div class="cell">27</div><div class="cell">28</div><div class="cell">29</div><div class="cell">30</div><div class="cell">31</div><div class="cell">32</div><div class="cell">33</div><div class="cell">34</div>
+                </div>
+                <div class="p1-row">
+                  <div class="cell"></div>
+                  <div class="cell">3.0</div><div class="cell">2.8</div><div class="cell">2.6</div><div class="cell">2.4</div><div class="cell">2.2</div><div class="cell">2.0</div><div class="cell">1.8</div><div class="cell">1.6</div><div class="cell">1.4</div><div class="cell">1.2</div><div class="cell">1.0</div><div class="cell">0.8</div><div class="cell">0.6</div><div class="cell">0.4</div><div class="cell">0.2</div><div class="cell">0</div>
+                </div>
+              </div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p1">3.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 2 -->
+        <div class="eval-row">
+          <div class="side-num">2</div>
+          <div class="eval-content">
+            <div class="eval-header-doc">
+              Códigos con menos del 50% de capacidad en gancho y charola 
+              <span class="eval-subtext-doc">(Tolerancia de 10 códigos ; a partir de $50,000 de venta promedio se otorga 1 código adicional por cada $10,000)</span>
+            </div>
+            <div class="p1-body">
+              <div class="p1-labels">
+                <div class="p1-lbl-item">Códigos &lt; 50% de capacidad <span class="p1-val-box" id="doc_p2_sin">1</span></div>
+                <div class="p1-lbl-item">Justificados <span class="p1-val-box" id="doc_p2_just">23</span></div>
+                <div class="p1-lbl-item">A calificar <span class="p1-val-box" id="doc_p2_calif">0</span></div>
+              </div>
+              <div class="p1-matrix">
+                <div class="p1-row">
+                  <div class="cell-lbl">Secuencia</div>
+                  <div class="cell">10</div><div class="cell">11</div><div class="cell">12</div><div class="cell">13</div><div class="cell">14</div><div class="cell">15</div><div class="cell">16</div><div class="cell">17</div><div class="cell">18</div><div class="cell">19</div><div class="cell">20</div><div class="cell">21</div><div class="cell">22</div><div class="cell">23</div><div class="cell">24</div><div class="cell">25</div>
+                </div>
+                <div class="p1-row">
+                  <div class="cell-lbl" style="font-size:6.5px;">Valor<br>(1.5 pts)</div>
+                  <div class="cell">24</div><div class="cell">25</div><div class="cell">26</div><div class="cell">27</div><div class="cell">28</div><div class="cell">29</div><div class="cell">30</div><div class="cell">31</div><div class="cell">32</div><div class="cell">33</div><div class="cell">34</div><div class="cell">35</div><div class="cell">36</div><div class="cell">37</div><div class="cell">38</div><div class="cell">39</div>
+                </div>
+                <div class="p1-row">
+                  <div class="cell"></div>
+                  <div class="cell">1.5</div><div class="cell">1.4</div><div class="cell">1.3</div><div class="cell">1.2</div><div class="cell">1.1</div><div class="cell">1.0</div><div class="cell">0.9</div><div class="cell">0.8</div><div class="cell">0.7</div><div class="cell">0.6</div><div class="cell">0.5</div><div class="cell">0.4</div><div class="cell">0.3</div><div class="cell">0.2</div><div class="cell">0.1</div><div class="cell">0</div>
+                </div>
+              </div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p2">1.5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 3 -->
+        <div class="eval-row">
+          <div class="side-num">3</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Confiabilidad de inventario<br><span class="eval-subtext-doc">(Cíclicos / Confiabilidad)</span></div>
+              <div class="p-val-badge">Valor<br>(0.5 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p3_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p3_no"></div></div>
+              </div>
+              <div class="p-desc">El valor se obtiene solo si se cumplen dos procesos</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p3">0.5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 4 -->
+        <div class="eval-row">
+          <div class="side-num">4</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Planogramas actualizados<br><span class="eval-subtext-doc">(90 días para implementar a partir de su fecha de envío)</span></div>
+              <div class="p-val-badge">Valor<br>(0.5 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p4_si"></div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p4_no">X</div></div>
+              </div>
+              <div class="p-desc">Por vencimiento sin tolerancia; por mobiliario tolerancia de 1 falla en montaje por cada 20 planogramas</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p4">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 5 -->
+        <div class="eval-row">
+          <div class="side-num">5</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Plantilla completa</div>
+              <div class="p-val-badge">Valor<br>(1.0 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p5_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p5_no"></div></div>
+              </div>
+              <div class="p-desc">Total de Personas<br><strong id="doc_p5_personas_txt">21 DE 10</strong></div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p5">1.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA PARAMETROS DE VENTAS (ENTRE 5 Y 6) -->
+        <div class="param-table-container">
+          <table class="param-table">
+            <thead>
+              <tr>
+                <th colspan="3">Parametro de Ventas</th>
+                <th>#Personas</th>
+                <th style="width:20px; border:none; background:white;"></th>
+                <th colspan="3">Parametro de Ventas</th>
+                <th>#Personas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>De $16,001</td><td>a</td><td>De $20,000</td><td>5</td>
+                <td style="border:none;"></td>
+                <td>De $44,001</td><td>a</td><td>De $62,000</td><td>8</td>
+              </tr>
+              <tr>
+                <td>De $20,001</td><td>a</td><td>De $26,000</td><td>6</td>
+                <td style="border:none;"></td>
+                <td>De $62,001</td><td>a</td><td>De $80,000</td><td>9</td>
+              </tr>
+              <tr>
+                <td>De $26,001</td><td>a</td><td>De $44,000</td><td>7</td>
+                <td style="border:none;"></td>
+                <td>De $80,001</td><td>a</td><td>De $100,000</td><td>10</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PUNTO 6 -->
+        <div class="eval-row">
+          <div class="side-num">6</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Producto evidentemente sucio</div>
+              <div class="p-val-badge">Valor<br>(0.5 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p6_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p6_no"></div></div>
+              </div>
+              <div class="p-desc">Tolerancia de 10 productos. Adicional se otorgan 5 por cada 10,000 productos en piso de venta</div>
+              <div class="p-val-badge" style="width:75px;">Total de productos sucios<br><span style="font-size:8.5px; margin-top:2px;" id="doc_p6_prods_txt">02 DE 25</span></div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p6">0.5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 7 -->
+        <div class="eval-row">
+          <div class="side-num">7</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Producto etiquetado, precios de alta volatilidad señalización</div>
+              <div class="p-val-badge">Valor<br>(0.4 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p7_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p7_no"></div></div>
+              </div>
+              <div class="p-desc">Tolerancia hasta 5 etiquetas o incumplimientos</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p7">0.4</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 8 -->
+        <div class="eval-row">
+          <div class="side-num">8</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Producto ordenado<br><span class="eval-subtext-doc">(Orden, careo, frenteo, distribución)</span></div>
+              <div class="p-val-badge">Valor<br>(0.3 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p8_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p8_no"></div></div>
+              </div>
+              <div class="p-desc">Tolerancia de 10 códigos</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p8">0.3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 9 -->
+        <div class="eval-row">
+          <div class="side-num">9</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Máquinas de última generación y accesorios</div>
+              <div class="p-val-badge">Valor<br>(0.3 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p9_si"></div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p9_no">X</div></div>
+              </div>
+              <div class="p-desc">Sin tolerancia</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p9">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 10 -->
+        <div class="eval-row">
+          <div class="side-num">10</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Cumplimiento operativo en cajas de cobro</div>
+              <div class="p-val-badge">Valor<br>(0.5 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p10_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p10_no"></div></div>
+              </div>
+              <div class="p-desc">Sin tolerancia: Check outs y cajas de mostrador limpias, sin objetos ajenos; sistema, pinpad,TPV listos para operar y morralla</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p10">0.5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 11 -->
+        <div class="eval-row">
+          <div class="side-num">11</div>
+          <div class="eval-content">
+            <div class="p-generic">
+              <div class="p-title">Respeto layout / mostrador limpio / pasillos libres</div>
+              <div class="p-val-badge">Valor<br>(0.5 pts)</div>
+              <div class="yes-no-group">
+                <div class="yn-box"><div class="yn-top">Si</div><div class="yn-bot" id="doc_p11_si">X</div></div>
+                <div class="yn-box"><div class="yn-top">No</div><div class="yn-bot" id="doc_p11_no"></div></div>
+              </div>
+              <div class="p-desc">Sin tolerancia</div>
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" id="doc_sub_p11">0.5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUNTO 12 -->
+        <div class="eval-row">
+          <div class="side-num" style="min-height:90px;">12</div>
+          <div class="eval-content">
+            <div class="p-generic" style="align-items:stretch;">
+              <div class="p-title" style="display:flex; flex-direction:column; justify-content:center; gap:6px;">
+                Imagen general de inmueble
+                <div class="p-val-badge" style="width:60px; height:36px;">Valor<br>(1.0 pts)</div>
+              </div>
+
+              <div class="p12-grid">
+                <!-- Col 1 -->
+                <div style="display:flex; flex-direction:column; gap:3px;">
+                  <div class="p12-item">
+                    <div class="p12-txt"><strong>Limpieza general:</strong> Mobiliario / tienda exterior-interior / tapetes tolerancia de una falla por cada 20 planogramas (Valor 0.2 pts)</div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">Si</div><div class="yn-bot" style="font-size:7.5px;" id="doc_p12a_si">0.2</div></div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">No</div><div class="yn-bot" id="doc_p12a_no"></div></div>
+                  </div>
+                  <div class="p12-item">
+                    <div class="p12-txt"><strong>Mantenimiento de tienda</strong> (Valor 0.2 pts)</div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">Si</div><div class="yn-bot" style="font-size:7.5px;" id="doc_p12b_si">0.2</div></div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">No</div><div class="yn-bot" id="doc_p12b_no"></div></div>
+                  </div>
+                  <div class="p12-item">
+                    <div class="p12-txt"><strong>Rotulación</strong> (Valor 0.2 pts)</div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">Si</div><div class="yn-bot" style="font-size:7.5px;" id="doc_p12c_si">0.2</div></div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">No</div><div class="yn-bot" id="doc_p12c_no"></div></div>
+                  </div>
+                </div>
+                <!-- Col 2 -->
+                <div style="display:flex; flex-direction:column; gap:3px;">
+                  <div class="p12-item">
+                    <div class="p12-txt"><strong>Gráficos:</strong> En buen estado, autorizados y colocados correctamente (Valor 0.2 pts)</div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">Si</div><div class="yn-bot" style="font-size:7.5px;" id="doc_p12d_si">0.2</div></div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">No</div><div class="yn-bot" id="doc_p12d_no"></div></div>
+                  </div>
+                  <div class="p12-item">
+                    <div class="p12-txt"><strong>Elementos para atención a clientes:</strong> Horarios / música / catálogo / estacionamiento libre canastillas / impresos informativos / bolsas (Valor 0.2 pts)</div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">Si</div><div class="yn-bot" style="font-size:7.5px;" id="doc_p12e_si">0.2</div></div>
+                    <div class="yn-box" style="width:26px;"><div class="yn-top" style="font-size:7px;">No</div><div class="yn-bot" id="doc_p12e_no"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="subtotal-box">
+                <div class="subtotal-lbl">Subtotal</div>
+                <div class="subtotal-val" style="font-size:16px;" id="doc_sub_p12">1.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMENTARIOS Y TOTAL -->
+        <div class="footer-section">
+          <div class="obs-box">
+            <div style="font-size:7px; color:#555; margin-bottom:2px;">Comentarios a resolver para la siguiente visita:</div>
+            <strong id="doc_comentarios">4. SOLDADORAS: Implementación incorrecta conforme a layout (el careado de los lados del mueble no corresponde); GAS Y ACC: Falta colocación de 4 ganchos GA-6 y 1 GA-4 | 9. MAQUINAS UG Y ACC: Falta colocación de accesorios (Guías) en sierra 103235</strong>
+          </div>
+          <div class="total-box">
+            <div class="subtotal-lbl">Total</div>
+            <div class="subtotal-val" style="font-size:18px;" id="doc_total_final">9.2</div>
+          </div>
+        </div>
+
+        <!-- FIRMAS -->
+        <div class="signatures-grid">
+          <div>
+            <div class="sig-name" id="doc_sig_auditor">Oscar H.</div>
+            <div class="sig-line"><strong>Oscar Hidalgo</strong><br>Auditor de Check List<br>Nombre y firma</div>
+          </div>
+          <div>
+            <div class="sig-name" id="doc_sig_encargado">Héctor Barrera</div>
+            <div class="sig-line"><strong>Héctor Barrera</strong><br>Encargado de Tienda<br>Nombre y firma</div>
+          </div>
+          <div>
+            <div class="sig-name" id="doc_sig_supervisor">Oscar Hidalgo</div>
+            <div class="sig-line"><strong>Oscar Hidalgo</strong><br>Gte. o Supervisor de Tienda<br>Nombre y firma</div>
+          </div>
+          <div>
+            <div class="sig-name" id="doc_sig_gerente">Saúl Gómez</div>
+            <div class="sig-line"><strong>Saúl Gómez</strong><br>Gte. Nacional o Dir. de Tiendas Fix<br>Nombre y firma</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- LÓGICA DE CÁLCULO Y SINCRONIZACIÓN EN TIEMPO REAL -->
+  <script>
+    // Formatear fechas a DD/MM/YY
+    function formatearFecha(fechaStr) {
+      if (!fechaStr) return '';
+      const partes = fechaStr.split('-');
+      if (partes.length !== 3) return fechaStr;
+      const ano = partes[0].slice(-2);
+      const mes = parseInt(partes[1], 10);
+      const dia = parseInt(partes[2], 10);
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    // Formatear moneda
+    function formatearMoneda(val) {
+      const num = parseFloat(val) || 0;
+      return '$ ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Formatear números con ceros a la izquierda
+    function padZero(num, size = 2) {
+      let s = num + "";
+      while (s.length < size) s = "0" + s;
+      return s;
+    }
+
+    function sincronizarYCalcular() {
+      // 1. DATOS GENERALES DEL CLIENTE
+      const fecha = document.getElementById('fecha').value;
+      const noCliente = document.getElementById('no_cliente').value;
+      const razonSocial = document.getElementById('razon_social').value;
+      const direccion = document.getElementById('direccion').value;
+      const antiguedad = document.getElementById('antiguedad').value;
+      const mts2 = document.getElementById('mts2').value;
+      const fechaInicial = document.getElementById('fecha_inicial').value;
+      const fechaFinal = document.getElementById('fecha_final').value;
+      const ventaPromedio = parseFloat(document.getElementById('venta_promedio').value) || 0;
+      const ventaFabrica = parseFloat(document.getElementById('venta_fabrica').value) || 0;
+      const tickets = document.getElementById('tickets').value;
+      const partFabrica = parseFloat(document.getElementById('part_fabrica').value) || 0;
+
+      // Reflejar en Documento Oficial
+      document.getElementById('doc_fecha').textContent = formatearFecha(fecha);
+      document.getElementById('doc_no_cliente').textContent = noCliente;
+      document.getElementById('doc_razon_social').textContent = razonSocial;
+      document.getElementById('doc_direccion').textContent = direccion;
+      document.getElementById('doc_antiguedad').textContent = antiguedad ? `${antiguedad} meses` : '';
+      document.getElementById('doc_mts2').textContent = mts2;
+      document.getElementById('doc_fecha_inicial').textContent = formatearFecha(fechaInicial);
+      document.getElementById('doc_fecha_final').textContent = formatearFecha(fechaFinal);
+      document.getElementById('doc_venta_promedio').textContent = formatearMoneda(ventaPromedio);
+      document.getElementById('doc_venta_fabrica').textContent = formatearMoneda(ventaFabrica);
+      document.getElementById('doc_tickets').textContent = tickets;
+      document.getElementById('doc_part_fabrica').textContent = partFabrica.toFixed(1);
+
+      // --- PUNTO 1 ---
+      let justificadosP1 = 0;
+      if (ventaPromedio >= 50000) {
+        justificadosP1 = 5 + Math.floor((ventaPromedio - 50000) / 10000);
+      } else {
+        justificadosP1 = 5;
+      }
+      document.getElementById('p1_justificados').value = justificadosP1;
+
+      const sinExistenciaP1 = parseFloat(document.getElementById('p1_sin_existencia').value) || 0;
+      const aCalificarP1 = Math.max(0, sinExistenciaP1 - justificadosP1);
+      document.getElementById('p1_a_calificar').value = aCalificarP1;
+
+      let ptsP1 = 0;
+      if (aCalificarP1 <= 0) {
+        ptsP1 = 3.0;
+      } else if (aCalificarP1 >= 15) {
+        ptsP1 = 0.0;
+      } else {
+        ptsP1 = 3.0 - (aCalificarP1 * 0.2);
+        if (ptsP1 < 0) ptsP1 = 0.0;
+      }
+      document.getElementById('pts_p1').textContent = ptsP1.toFixed(1);
+      document.getElementById('doc_p1_sin').textContent = sinExistenciaP1;
+      document.getElementById('doc_p1_just').textContent = justificadosP1;
+      document.getElementById('doc_p1_calif').textContent = aCalificarP1;
+      document.getElementById('doc_sub_p1').textContent = ptsP1.toFixed(1);
+
+      // --- PUNTO 2 ---
+      let justificadosP2 = 0;
+      if (ventaPromedio >= 50000) {
+        justificadosP2 = 10 + Math.floor((ventaPromedio - 50000) / 10000);
+      } else {
+        justificadosP2 = 10;
+      }
+      document.getElementById('p2_justificados').value = justificadosP2;
+
+      const menos50P2 = parseFloat(document.getElementById('p2_menos_50').value) || 0;
+      const aCalificarP2 = Math.max(0, menos50P2 - justificadosP2);
+      document.getElementById('p2_a_calificar').value = aCalificarP2;
+
+      let ptsP2 = 0;
+      if (aCalificarP2 <= 0) {
+        ptsP2 = 1.5;
+      } else if (aCalificarP2 >= 15) {
+        ptsP2 = 0.0;
+      } else {
+        ptsP2 = 1.5 - (aCalificarP2 * 0.1);
+        if (ptsP2 < 0) ptsP2 = 0.0;
+      }
+      document.getElementById('pts_p2').textContent = ptsP2.toFixed(1);
+      document.getElementById('doc_p2_sin').textContent = menos50P2;
+      document.getElementById('doc_p2_just').textContent = justificadosP2;
+      document.getElementById('doc_p2_calif').textContent = aCalificarP2;
+      document.getElementById('doc_sub_p2').textContent = ptsP2.toFixed(1);
+
+      // --- PUNTO 3 ---
+      const rP3 = document.querySelector('input[name="p3"]:checked')?.value;
+      const ptsP3 = (rP3 === 'si') ? 0.5 : 0.0;
+      document.getElementById('pts_p3').textContent = ptsP3.toFixed(1);
+      document.getElementById('doc_p3_si').textContent = (rP3 === 'si') ? 'X' : '';
+      document.getElementById('doc_p3_no').textContent = (rP3 === 'no') ? 'X' : '';
+      document.getElementById('doc_sub_p3').textContent = ptsP3.toFixed(1);
+
+      // --- PUNTO 4 ---
+      const rP4 = document.querySelector('input[name="p4"]:checked')?.value;
+      const ptsP4 = (rP4 === 'si') ? 0.5 : 0.0;
+      document.getElementById('pts_p4').textContent = ptsP4.toFixed(1);
+      document.getElementById('doc_p4_si').textContent = (rP4 === 'si') ? 'X' : '';
+      document.getElementById('doc_p4_no').textContent = (rP4 === 'no') ? 'X' : '';
+      document.getElementById('doc_sub_p4').textContent = ptsP4.toFixed(1);
+
+      // --- PUNTO 5 ---
+      // Calcular plantilla requerida según Venta Promedio
+      let reqP5 = 5;
+      if (ventaPromedio >= 80001) reqP5 = 10;
+      else if (ventaPromedio >= 62001) reqP5 = 9;
+      else if (ventaPromedio >= 44001) reqP5 = 8;
+      else if (ventaPromedio >= 26001) reqP5 = 7;
+      else if (ventaPromedio >= 20001) reqP5 = 6;
+      else reqP5 = 5;
+
+      document.getElementById('p5_requerido').value = reqP5;
+
+      const persP5 = parseFloat(document.getElementById('p5_personas').value) || 0;
+      const cumpleP5 = persP5 >= reqP5;
+      const ptsP5 = cumpleP5 ? 1.0 : 0.0;
+
+      document.getElementById('pts_p5').textContent = ptsP5.toFixed(1);
+      document.getElementById('doc_p5_si').textContent = cumpleP5 ? 'X' : '';
+      document.getElementById('doc_p5_no').textContent = !cumpleP5 ? 'X' : '';
+      document.getElementById('doc_p5_personas_txt').textContent = `${persP5} DE ${reqP5}`;
+      document.getElementById('doc_sub_p5').textContent = ptsP5.toFixed(1);
+
+      // --- PUNTO 6 ---
+      const tolP6 = 10 + (Math.floor(ventaPromedio / 10000) * 5);
+      document.getElementById('p6_tolerancia').value = tolP6;
+      const incP6 = parseFloat(document.getElementById('p6_incidencias').value) || 0;
+      const cumpleP6 = incP6 <= tolP6;
+      const ptsP6 = cumpleP6 ? 0.5 : 0.0;
+
+      document.getElementById('pts_p6').textContent = ptsP6.toFixed(1);
+      document.getElementById('doc_p6_si').textContent = cumpleP6 ? 'X' : '';
+      document.getElementById('doc_p6_no').textContent = !cumpleP6 ? 'X' : '';
+      document.getElementById('doc_p6_prods_txt').textContent = `${padZero(incP6)} DE ${tolP6}`;
+      document.getElementById('doc_sub_p6').textContent = ptsP6.toFixed(1);
+
+      // --- PUNTO 7 ---
+      const incP7 = parseFloat(document.getElementById('p7_incidencias').value) || 0;
+      const cumpleP7 = incP7 <= 5;
+      const ptsP7 = cumpleP7 ? 0.4 : 0.0;
+
+      document.getElementById('pts_p7').textContent = ptsP7.toFixed(1);
+      document.getElementById('doc_p7_si').textContent = cumpleP7 ? 'X' : '';
+      document.getElementById('doc_p7_no').textContent = !cumpleP7 ? 'X' : '';
+      document.getElementById('doc_sub_p7').textContent = ptsP7.toFixed(1);
+
+      // --- PUNTO 8 ---
+      const incP8 = parseFloat(document.getElementById('p8_incidencias').value) || 0;
+      const cumpleP8 = incP8 <= 10;
+      const ptsP8 = cumpleP8 ? 0.3 : 0.0;
+
+      document.getElementById('pts_p8').textContent = ptsP8.toFixed(1);
+      document.getElementById('doc_p8_si').textContent = cumpleP8 ? 'X' : '';
+      document.getElementById('doc_p8_no').textContent = !cumpleP8 ? 'X' : '';
+      document.getElementById('doc_sub_p8').textContent = ptsP8.toFixed(1);
+
+      // --- PUNTO 9 ---
+      const rP9 = document.querySelector('input[name="p9"]:checked')?.value;
+      const ptsP9 = (rP9 === 'si') ? 0.3 : 0.0;
+      document.getElementById('pts_p9').textContent = ptsP9.toFixed(1);
+      document.getElementById('doc_p9_si').textContent = (rP9 === 'si') ? 'X' : '';
+      document.getElementById('doc_p9_no').textContent = (rP9 === 'no') ? 'X' : '';
+      document.getElementById('doc_sub_p9').textContent = ptsP9.toFixed(1);
+
+      // --- PUNTO 10 ---
+      const rP10 = document.querySelector('input[name="p10"]:checked')?.value;
+      const ptsP10 = (rP10 === 'si') ? 0.5 : 0.0;
+      document.getElementById('pts_p10').textContent = ptsP10.toFixed(1);
+      document.getElementById('doc_p10_si').textContent = (rP10 === 'si') ? 'X' : '';
+      document.getElementById('doc_p10_no').textContent = (rP10 === 'no') ? 'X' : '';
+      document.getElementById('doc_sub_p10').textContent = ptsP10.toFixed(1);
+
+      // --- PUNTO 11 ---
+      const rP11 = document.querySelector('input[name="p11"]:checked')?.value;
+      const ptsP11 = (rP11 === 'si') ? 0.5 : 0.0;
+      document.getElementById('pts_p11').textContent = ptsP11.toFixed(1);
+      document.getElementById('doc_p11_si').textContent = (rP11 === 'si') ? 'X' : '';
+      document.getElementById('doc_p11_no').textContent = (rP11 === 'no') ? 'X' : '';
+      document.getElementById('doc_sub_p11').textContent = ptsP11.toFixed(1);
+
+      // --- PUNTO 12 ---
+      const subitemsP12 = ['a', 'b', 'c', 'd', 'e'];
+      let ptsP12 = 0.0;
+
+      subitemsP12.forEach(item => {
+        const val = document.querySelector(`input[name="p12${item}"]:checked`)?.value;
+        const elemSi = document.getElementById(`doc_p12${item}_si`);
+        const elemNo = document.getElementById(`doc_p12${item}_no`);
+
+        if (val === 'si') {
+          ptsP12 += 0.2;
+          elemSi.textContent = '0.2';
+          elemNo.textContent = '';
+        } else {
+          elemSi.textContent = '';
+          elemNo.textContent = 'X';
+        }
+      });
+
+      document.getElementById('pts_p12').textContent = ptsP12.toFixed(1);
+      document.getElementById('doc_sub_p12').textContent = ptsP12.toFixed(1);
+
+      // --- TOTAL FINAL ---
+      const totalScore = ptsP1 + ptsP2 + ptsP3 + ptsP4 + ptsP5 + ptsP6 + ptsP7 + ptsP8 + ptsP9 + ptsP10 + ptsP11 + ptsP12;
+      const totalFormatted = totalScore.toFixed(1);
+
+      document.getElementById('doc_calificacion_final').textContent = totalFormatted;
+      document.getElementById('doc_total_final').textContent = totalFormatted;
+
+      // --- COMENTARIOS Y FIRMAS ---
+      document.getElementById('doc_comentarios').textContent = document.getElementById('comentarios').value;
+      document.getElementById('doc_sig_auditor').textContent = document.getElementById('sig_auditor').value;
+      document.getElementById('doc_sig_encargado').textContent = document.getElementById('sig_encargado').value;
+      document.getElementById('doc_sig_supervisor').textContent = document.getElementById('sig_supervisor').value;
+      document.getElementById('doc_sig_gerente').textContent = document.getElementById('sig_gerente').value;
+    }
+
+    // Registrar escuchadores de eventos
+    const form = document.getElementById('evalForm');
+    form.addEventListener('input', sincronizarYCalcular);
+    form.addEventListener('change', sincronizarYCalcular);
+
+    // Ejecución inicial al cargar
+    window.onload = function() {
+      sincronizarYCalcular();
+    };
+    function imprimirDiv(idDiv) {
+    // 1. Guardar el contenido original de la página
+    var contenidoOriginal = document.body.innerHTML;
+    
+    // 2. Obtener el contenido del div específico
+    var contenidoDiv = document.getElementById(idDiv).innerHTML;
+    
+    // 3. Reemplazar el body temporalmente solo con el contenido del div
+    document.body.innerHTML = contenidoDiv;
+    
+    // 4. Lanzar la ventana de impresión
+    window.print();
+    
+    // 5. Restaurar el contenido original de la página
+    document.body.innerHTML = contenidoOriginal;
+    
+    // Nota: Recargar la página o volver a asignar eventos puede ser necesario 
+    // si usas frameworks de JS, pero para HTML plano funciona perfecto.
+    location.reload(); 
+  }
+  </script>
+</body>
+</html>
